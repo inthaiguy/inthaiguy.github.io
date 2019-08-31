@@ -1,0 +1,1 @@
+a:1:{i:0;s:67:"content/bjb/blog/snippets/post/2019-08-31-19-07-06_bits_hi-world.md";}
