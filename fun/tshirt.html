@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Stretchable T-Shirt</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        canvas {
+            border: 2px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="tshirtCanvas" width="600" height="600"></canvas>
+
+    <script>
+        const canvas = document.getElementById("tshirtCanvas");
+        const ctx = canvas.getContext("2d");
+        let shirtImg = new Image();
+        let isDragging = false;
+        let dragOffsetX = 0, dragOffsetY = 0;
+        let initialX = 0, initialY = 0;
+
+        // Load the red t-shirt image
+        shirtImg.src = 'https://redtshirt.com/red.png';  // Placeholder for the red t-shirt
+        shirtImg.onload = () => {
+            drawShirt(0, 0);
+        };
+
+        // Function to draw the T-shirt with distortions
+        function drawShirt(distortX, distortY) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the image, slightly stretched based on distortions
+            const stretchX = 400 + distortX;
+            const stretchY = 400 + distortY;
+            ctx.drawImage(shirtImg, canvas.width / 2 - stretchX / 2, canvas.height / 2 - stretchY / 2, stretchX, stretchY);
+        }
+
+        // Mouse down to start dragging
+        canvas.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            initialX = e.clientX;
+            initialY = e.clientY;
+        });
+
+        // Mouse move to apply stretching effect
+        canvas.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                dragOffsetX = e.clientX - initialX;
+                dragOffsetY = e.clientY - initialY;
+
+                drawShirt(dragOffsetX, dragOffsetY);
+            }
+        });
+
+        // Mouse up to stop dragging and bounce back
+        canvas.addEventListener('mouseup', function(e) {
+            isDragging = false;
+
+            // Animate bouncing back to the original shape
+            let bounceInterval = setInterval(function() {
+                dragOffsetX *= 0.9;
+                dragOffsetY *= 0.9;
+                drawShirt(dragOffsetX, dragOffsetY);
+
+                if (Math.abs(dragOffsetX) < 1 && Math.abs(dragOffsetY) < 1) {
+                    clearInterval(bounceInterval);
+                    drawShirt(0, 0);  // Restore the original shape
+                }
+            }, 16);  // 60 FPS animation (1000ms / 60 = ~16ms per frame)
+        });
+    </script>
+
+</body>
+</html>
