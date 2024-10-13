@@ -1,0 +1,76 @@
+/* Global styles for the landing page */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Set the background image to cover the full page */
+body {
+    height: 100vh;
+    background: url('background-image.jpg') no-repeat center center/cover; /* Replace with your image */
+    font-family: Arial, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Overlay for the black screen with 25% opacity */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.55); /* 25% black overlay */
+    z-index: 1;
+}
+
+/* Main content container */
+.content {
+    z-index: 2;
+    text-align: center;
+}
+
+.content h1 {
+    font-size: 48px;
+    color: #fff;
+}
+
+/* Bottom menu container, fixed at the bottom */
+.bottom-menu {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.25); /* Ensure a bit more black at the bottom for clarity */
+}
+
+/* Menu items in the bottom menu */
+.menu-items {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.menu-items li a {
+    color: rgb(76, 78, 53);
+    font-size: 20px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.menu-items li a:hover {
+    color: #f0f0f0; /* Slight color change on hover */
+}
+
+/* Ensure no scrollbars appear on small screens */
+html, body {
+    overflow: hidden;
+}
