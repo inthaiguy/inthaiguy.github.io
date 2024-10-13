@@ -24,8 +24,8 @@ async function fetchGoogleSheetData() {
         const dynamicText = document.getElementById('dynamic-text');
         dynamicText.textContent = `On ${date} in ${location} at ${placeName}`;
         
-        // Now that the content is ready, trigger the fade-in by setting opacity to 1
-        dynamicText.style.opacity = '1';
+        // Now that the content is ready, display the h2 tag
+        dynamicText.style.display = 'block';
     } catch (error) {
         console.error('Error fetching Google Sheet data:', error);
     }
