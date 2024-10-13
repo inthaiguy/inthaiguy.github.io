@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clicker Game</title>
+    <style>
+        /* Basic page styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* Game container styling */
+        .game-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Title styling */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* Game button styling */
+        #click-btn {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #click-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Score display styling */
+        #score {
+            font-size: 22px;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        /* Timer display styling */
+        #timer {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #666;
+        }
+
+        /* Disabled button state */
+        #click-btn:disabled {
+            background-color: #888;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>Clicker Game</h1>
+    <p>Click the button as fast as you can in <span id="time-limit">10</span> seconds!</p>
+    <button id="click-btn">Click me!</button>
+    <div id="score">Score: 0</div>
+    <div id="timer">Time left: 10s</div>
+</div>​⬤
