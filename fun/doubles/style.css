@@ -76,3 +76,19 @@ body {
     /* Existing styles... */
     text-align: right; /* Align numbers to the right for better readability */
 }
+
+/* Add this at the end of your style.css */
+
+/* Styling for the emoji display */
+.emojis-container {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 2em * 2; /* Approximate height for 2 rows */
+    overflow: hidden;
+}
+
+.emojis-container span {
+    font-size: 24px; /* Adjust size as needed */
+    margin: 2px;
+}

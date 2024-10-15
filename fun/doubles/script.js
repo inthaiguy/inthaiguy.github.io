@@ -118,6 +118,21 @@ document.getElementById('doublesForm').addEventListener('submit', function(e) {
         additionalLine = `Double ${doublesToBillion > 0 ? doublesToBillion : 0} more times to become a billionaire.`;
     }
 
+    // Generate emojis based on userDoubles
+    let emojisHTML = '';
+    if (userDoubles > 0) {
+        const maxEmojis = 40; // Maximum of 40 emojis (20 per row * 2 rows)
+        const displayDoubles = userDoubles > maxEmojis ? maxEmojis : userDoubles;
+        let emojis = '💵'.repeat(displayDoubles);
+
+        // Insert <br> after 20 emojis to create two rows
+        if (displayDoubles > 20) {
+            emojis = '💵'.repeat(20) + '<br>' + '💵'.repeat(displayDoubles - 20);
+        }
+
+        emojisHTML = `<div class="emojis-container">${emojis}</div>`;
+    }
+
     // Display the results
     let resultHTML = `<p>You’ve doubled your money <strong>${userDoubles}</strong> times!</p>`;
     if (avgDoubles !== 'N/A') {
@@ -126,6 +141,7 @@ document.getElementById('doublesForm').addEventListener('submit', function(e) {
         resultHTML += `<p>Average doubles data not available for your age group.</p>`;
     }
     resultHTML += `<p>${additionalLine}</p>`;
+    resultHTML += emojisHTML;
 
     document.getElementById('result').innerHTML = resultHTML;
 });
