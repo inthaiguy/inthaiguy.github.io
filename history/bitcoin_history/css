@@ -1,0 +1,33 @@
+@font-face {
+  font-family: 'Antic Slab';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://web.archive.org/web/20230205021147im_/https://fonts.gstatic.com/s/anticslab/v16/bWt97fPFfRzkCa9Jlp6IacVcWQ.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://web.archive.org/web/20230205021147im_/https://fonts.gstatic.com/s/dancingscript/v24/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7BMSo3Sup5.ttf) format('truetype');
+}
+
+/*
+     FILE ARCHIVED ON 02:11:47 Feb 05, 2023 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 02:44:46 Jun 23, 2024.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  captures_list: 0.595
+  exclusion.robots: 0.069
+  exclusion.robots.policy: 0.06
+  esindex: 0.009
+  cdx.remote: 12.052
+  LoadShardBlock: 158.624 (3)
+  PetaboxLoader3.datanode: 320.643 (5)
+  PetaboxLoader3.resolve: 662.652 (3)
+  load_resource: 1026.703 (2)
+*/

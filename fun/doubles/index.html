@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Net Worth Doubles Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h2>Net Worth Doubles Calculator</h2>
+        <form id="doublesForm">
+            <div class="form-group">
+                <label for="age">Your Age:</label>
+                <input type="number" id="age" name="age" min="10" max="99" required placeholder="Enter your age">
+            </div>
+            <div class="form-group">
+                <label for="netWorth">Your Net Worth ($):</label>
+                <input type="text" id="netWorth" name="netWorth" inputmode="numeric" required placeholder="Enter your net worth">
+            </div>
+            <button type="submit" class="calculate-btn">Calculate</button>
+            <div class="error" id="errorMsg"></div>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
