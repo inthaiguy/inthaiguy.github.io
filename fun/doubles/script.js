@@ -1,4 +1,5 @@
 // JavaScript for Net Worth Doubles Calculator
+// https://www.empower.com/the-currency/life/average-net-worth-by-age
 
 // Mapping of age decades to average doubles
 const averageDoublesTable = {
