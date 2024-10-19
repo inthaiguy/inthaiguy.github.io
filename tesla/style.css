@@ -26,19 +26,36 @@ h1 {
     border-radius: 8px;
     padding: 30px;
     margin: 20px;
-    width: 300px;
+    width: 350px;
+    box-sizing: border-box;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .temp-box h2, .battery-box h2 {
     font-size: 24px;
     color: #666;
+    margin-bottom: 20px;
 }
 
-.temp-box p {
-    font-size: 24px;
+.temperature-scales {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.temp-scale {
+    margin-bottom: 20px;
+}
+
+.temp-scale svg {
+    display: block;
+    margin: 0 auto;
+}
+
+.temp-scale p {
+    text-align: center;
+    font-size: 18px;
     color: #000;
-    margin-top: 10px;
 }
 
 .battery-box {
@@ -72,4 +89,10 @@ h1 {
     transform: translate(-50%, -50%);
     font-size: 32px;
     color: #000;
+}
+
+#last_updated {
+    font-size: 14px;
+    color: #888;
+    margin-top: 20px;
 }
