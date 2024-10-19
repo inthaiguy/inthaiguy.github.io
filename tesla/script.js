@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const RATE_LIMIT_INTERVAL = 60000; // 1 minute in milliseconds
+    const RATE_LIMIT_INTERVAL = 10000; // 1 minute in milliseconds
     const LAST_FETCH_KEY = 'lastFetchTime';
 
     function shouldFetchData() {

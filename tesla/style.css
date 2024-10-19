@@ -58,16 +58,9 @@ h1 {
 
 .battery-ring circle {
     fill: none;
-    stroke: #e6e6e6;
     stroke-width: 10;
-    cx: 75;
-    cy: 75;
-    r: 70;
-    transition: stroke-dashoffset 0.5s;
-}
-
-.battery-ring circle {
-    stroke: #ff0000; /* Default color (red) */
+    stroke: #e6e6e6; /* Default stroke color */
+    transition: stroke-dashoffset 0.5s, stroke 0.5s;
     stroke-dasharray: 440;
     stroke-dashoffset: 440;
 }
