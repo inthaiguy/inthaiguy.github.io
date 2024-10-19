@@ -2,30 +2,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchData() {
         fetch('https://hook.us1.make.com/y4jcfyeaodrzlnv73fpcthv03kw6o6aj')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Update the page with the received data
-            document.getElementById('display_name').textContent = data.display_name;
-            updateTemperatureScales(data.inside_tempF, data.outside_tempF);
-            updateBatteryLevel(data.battery_level);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update the page with the received data
+                document.getElementById('display_name').textContent = data.display_name;
+                updateTemperatureScales(data.inside_tempF, data.outside_tempF);
+                updateBatteryLevel(data.battery_level);
 
-            // Update the last updated time
-            const currentTime = new Date();
-            document.getElementById('last_updated').textContent = `Last Updated: ${currentTime.toLocaleTimeString()}`;
-        })
-        .catch(error => console.error('Error fetching data:', error));
-}
+                // Update the last updated time
+                const currentTime = new Date();
+                document.getElementById('last_updated').textContent = `Last Updated: ${currentTime.toLocaleTimeString()}`;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                // Optionally handle the error by displaying a message to the user
+                document.getElementById('last_updated').textContent = 'Failed to load data.';
+            });
+    }
 
     function updateTemperatureScales(insideTemp, outsideTemp) {
         // Temperature range
         const minTemp = 0; // Minimum temperature in Fahrenheit
         const maxTemp = 100; // Maximum temperature in Fahrenheit
         const svgWidth = 300; // Width of the SVG
+
+        // Ensure temperatures are within the range
+        insideTemp = Math.max(minTemp, Math.min(insideTemp, maxTemp));
+        outsideTemp = Math.max(minTemp, Math.min(outsideTemp, maxTemp));
 
         // Update inside temperature scale
         const insideTempX = ((insideTemp - minTemp) / (maxTemp - minTemp)) * svgWidth;
