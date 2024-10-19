@@ -14,28 +14,69 @@ h1 {
     color: #333;
 }
 
-.temperature {
+.main-content {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     margin-top: 40px;
 }
 
-.temp-box {
+.temp-box, .battery-box {
     background-color: #fff;
     border-radius: 8px;
     padding: 30px;
-    margin: 0 20px;
-    width: 250px;
+    margin: 20px;
+    width: 300px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.temp-box h2 {
+.temp-box h2, .battery-box h2 {
     font-size: 24px;
     color: #666;
 }
 
 .temp-box p {
-    font-size: 36px;
+    font-size: 24px;
     color: #000;
     margin-top: 10px;
+}
+
+.battery-box {
+    position: relative;
+}
+
+.battery-ring {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.battery-ring svg {
+    transform: rotate(-90deg);
+}
+
+.battery-ring circle {
+    fill: none;
+    stroke: #e6e6e6;
+    stroke-width: 10;
+    cx: 75;
+    cy: 75;
+    r: 70;
+    transition: stroke-dashoffset 0.5s;
+}
+
+.battery-ring circle {
+    stroke: #ff0000; /* Default color (red) */
+    stroke-dasharray: 440;
+    stroke-dashoffset: 440;
+}
+
+.battery-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    color: #000;
 }

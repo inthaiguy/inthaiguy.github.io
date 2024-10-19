@@ -8,15 +8,19 @@
 <body>
     <div class="dashboard">
         <img src="/img/2021-Tesla-ModelY.avif" width="180">
-        <h1 id="display_name">Vehicle Name</h1>
-        <div class="temperature">
+        <div class="main-content">
             <div class="temp-box">
-                <h2>Outside Temperature</h2>
-                <p id="outside_tempF">-- °F</p>
+                <h2>Temperature</h2>
+                <p id="tempF">Inside: -- °F | Outside: -- °F</p>
             </div>
-            <div class="temp-box">
-                <h2>Inside Temperature</h2>
-                <p id="inside_tempF">-- °F</p>
+            <div class="battery-box">
+                <h2>Battery Level</h2>
+                <div class="battery-ring">
+                    <svg width="150" height="150">
+                        <circle cx="75" cy="75" r="70"></circle>
+                    </svg>
+                    <div class="battery-percentage" id="battery_level">--%</div>
+                </div>
             </div>
         </div>
     </div>
