@@ -1,9 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Function to fetch data
+    // Function to fetch data from the Make.com webhook
     function fetchData() {
-        // Send a ping to the specified URL
         fetch('https://hook.us1.make.com/y4jcfyeaodrzlnv73fpcthv03kw6o6aj')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 // Update the page with the received data
                 document.getElementById('display_name').textContent = data.display_name;
