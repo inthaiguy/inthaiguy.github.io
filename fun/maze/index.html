@@ -134,22 +134,22 @@
 
         // Move the goal (green dot) to a new random location every few seconds
         function moveGoal() {
-            goalPos = {
-                x: Math.floor(Math.random() * boardSize),
-                y: Math.floor(Math.random() * boardSize)
-            };
+    do {
+        goalPos = {
+            x: Math.floor(Math.random() * boardSize),
+            y: Math.floor(Math.random() * boardSize)
+        };
 
-            // Ensure the goal doesn't land on an obstacle or the player
-            while (board[goalPos.y][goalPos.x] === 1 || (goalPos.x === playerPos.x && goalPos.y === playerPos.y)) {
-                goalPos = {
-                    x: Math.floor(Math.random() * boardSize),
-                    y: Math.floor(Math.random() * boardSize)
-                };
-            }
+        // Ensure the goal doesn't land on an obstacle or the player and ensure it's at least 6 squares away from the player
+    } while (
+        board[goalPos.y][goalPos.x] === 1 || 
+        (goalPos.x === playerPos.x && goalPos.y === playerPos.y) ||
+        Math.abs(goalPos.x - playerPos.x) + Math.abs(goalPos.y - playerPos.y) < 6
+    );
 
-            drawBoard();
-            goalTimeout = setTimeout(moveGoal, 4000); // Move every 5 seconds
-        }
+    drawBoard();
+    goalTimeout = setTimeout(moveGoal, 2100); // Move every 4 seconds
+}
 
         // Handle player movement with arrow keys
         document.addEventListener('keydown', (e) => {
