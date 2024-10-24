@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Maze Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #maze {
+            display: grid;
+            grid-template-columns: repeat(20, 30px);
+            grid-template-rows: repeat(20, 30px);
+            gap: 2px;
+        }
+        .cell {
+            width: 30px;
+            height: 30px;
+            background-color: lightgrey;
+            border: 1px solid #000;
+        }
+        .wall {
+            background-color: black;
+        }
+        .player {
+            background-color: blue;
+        }
+        .exit {
+            background-color: green;
+        }
+        #scoreboard {
+            margin-top: 20px;
+            width: 300px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Maze Game</h1>
+    <div id="maze"></div>
+    <div id="scoreboard">
+        <h2>High Scores</h2>
+        <ul id="scoreList"></ul>
+    </div>
+
+    <script>
+        const mazeSize = 20; // Increased grid size
+        let maze = [];
+        let playerPos = { x: Math.floor(mazeSize / 2), y: Math.floor(mazeSize / 2) };
+        let exitPos = { x: Math.floor(Math.random() * mazeSize), y: Math.floor(Math.random() * mazeSize) };
+        let startTime;
+        let gameFinished = false;
+    
+        // Generate a random maze with walls and a path from start to exit
+        function generateMaze() {
+            // Initialize maze array with all cells as walls (1 = wall, 0 = path)
+            maze = Array.from({ length: mazeSize }, () => Array(mazeSize).fill(1));
+    
+            // Carve out a guaranteed path from start to exit
+            carveGuaranteedPath(playerPos.x, playerPos.y, exitPos.x, exitPos.y);
+            
+            // Add random walls and additional paths
+            addRandomPaths();
+    
+            drawMaze();
+        }
+    
+        // Carve a guaranteed path from start to exit
+        function carveGuaranteedPath(x, y, exitX, exitY) {
+            maze[y][x] = 0; // Mark the start as part of the path
+    
+            // Move toward the exit, carving a path as we go
+            while (x !== exitX || y !== exitY) {
+                const directions = [];
+                if (x < exitX) directions.push([1, 0]);  // Move right
+                if (x > exitX) directions.push([-1, 0]); // Move left
+                if (y < exitY) directions.push([0, 1]);  // Move down
+                if (y > exitY) directions.push([0, -1]); // Move up
+    
+                const [dx, dy] = directions[Math.floor(Math.random() * directions.length)];
+                x += dx;
+                y += dy;
+                maze[y][x] = 0; // Mark as part of the path
+            }
+        }
+    
+        // Add random paths and walls to create multiple possible routes
+        function addRandomPaths() {
+            // Create additional random paths by removing some walls
+            for (let y = 1; y < mazeSize - 1; y++) {
+                for (let x = 1; x < mazeSize - 1; x++) {
+                    if (Math.random() < 0.2 && maze[y][x] === 1) {
+                        maze[y][x] = 0; // Randomly carve paths with a 20% chance
+                    }
+                }
+            }
+        }
+    
+        // Render the maze on the screen
+        function drawMaze() {
+            const mazeElement = document.getElementById('maze');
+            mazeElement.innerHTML = '';
+            for (let y = 0; y < mazeSize; y++) {
+                for (let x = 0; x < mazeSize; x++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    if (maze[y][x] === 1) {
+                        cell.classList.add('wall');
+                    }
+                    if (x === playerPos.x && y === playerPos.y) {
+                        cell.classList.add('player');
+                    }
+                    if (x === exitPos.x && y === exitPos.y) {
+                        cell.classList.add('exit');
+                    }
+                    mazeElement.appendChild(cell);
+                }
+            }
+        }
+    
+        // Move the player
+        function movePlayer(dx, dy) {
+            if (gameFinished) return;
+            const newX = playerPos.x + dx;
+            const newY = playerPos.y + dy;
+            if (newX >= 0 && newX < mazeSize && newY >= 0 && newY < mazeSize && maze[newY][newX] !== 1) {
+                playerPos.x = newX;
+                playerPos.y = newY;
+                if (playerPos.x === exitPos.x && playerPos.y === exitPos.y) {
+                    finishGame();
+                }
+            }
+            drawMaze();
+        }
+    
+        // Finish the game and ask for the player's name
+        function finishGame() {
+            gameFinished = true;
+            const endTime = new Date();
+            const score = Math.round((endTime - startTime) / 1000);
+            const playerName = prompt("Enter your 3-letter name:");
+            updateScores(playerName, score);
+        }
+    
+        // Handle player movement with arrow keys
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'ArrowUp': movePlayer(0, -1); break;
+                case 'ArrowDown': movePlayer(0, 1); break;
+                case 'ArrowLeft': movePlayer(-1, 0); break;
+                case 'ArrowRight': movePlayer(1, 0); break;
+            }
+        });
+    
+        // Initialize the game
+        function startGame() {
+            playerPos = { x: Math.floor(mazeSize / 2), y: Math.floor(mazeSize / 2) };
+            exitPos = { x: Math.floor(Math.random() * mazeSize), y: Math.floor(Math.random() * mazeSize) };
+            startTime = new Date();
+            gameFinished = false;
+            generateMaze();
+        }
+    
+        // High scores using cookies
+        function getScores() {
+            const cookie = document.cookie.split('; ').find(row => row.startsWith('mazeScores='));
+            return cookie ? JSON.parse(decodeURIComponent(cookie.split('=')[1])) : [];
+        }
+    
+        function setScores(scores) {
+            document.cookie = `mazeScores=${encodeURIComponent(JSON.stringify(scores))}; path=/; max-age=31536000`;
+        }
+    
+        function updateScores(name, score) {
+            const scores = getScores();
+            scores.unshift({ name, score });
+            if (scores.length > 10) scores.pop(); // Keep only the last 10 scores
+            setScores(scores);
+            displayScores();
+        }
+    
+        function displayScores() {
+            const scores = getScores();
+            const scoreList = document.getElementById('scoreList');
+            scoreList.innerHTML = '';
+            scores.forEach(({ name, score }) => {
+                const li = document.createElement('li');
+                li.textContent = `${name} - ${score} seconds`;
+                scoreList.appendChild(li);
+            });
+        }
+    
+        // Start the game
+        startGame();
+        displayScores();
+    </script>
+</body>
+</html>
