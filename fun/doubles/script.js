@@ -135,15 +135,16 @@ document.getElementById('doublesForm').addEventListener('submit', function(e) {
         imagesHTML = `<div class="images-container"><img src="imgs/${displayDoubles}.png" alt="Double ${displayDoubles}" class="double-image"></div>`;
     }
 
-    // Compile the result HTML with all information and the image
-    let resultHTML = `<p>You’ve doubled your money <strong>${userDoubles}</strong> times!</p>`;
+    // Compile the result HTML with images first, followed by textual information
+    let resultHTML = imagesHTML; // Insert images first
+
+    resultHTML += `<p>You’ve doubled your money <strong>${userDoubles}</strong> times!</p>`;
     if (avgDoubles !== 'N/A') {
         resultHTML += `<p>The Average <strong>${age}</strong> year old has doubled their money <strong>${avgDoubles}</strong> times.</p>`;
     } else {
         resultHTML += `<p>Average doubles data not available for your age group.</p>`;
     }
     resultHTML += `<p>${additionalLine}</p>`;
-    resultHTML += imagesHTML;
 
     // Insert the compiled HTML into the result div
     document.getElementById('result').innerHTML = resultHTML;
