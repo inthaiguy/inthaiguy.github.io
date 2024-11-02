@@ -149,53 +149,53 @@ document.getElementById('doublesForm').addEventListener('submit', function(e) {
     // Insert the compiled HTML into the result div
     document.getElementById('result').innerHTML = resultHTML;
 
-    // After the image is in the DOM, add event listeners for hover animation or auto-cycling
-    const doubleImage = document.querySelector('.double-image');
-    if (doubleImage) {
-        if (isMobileDevice()) {
-            // Mobile: Auto-cycling at 330ms upon first load
-            let currentIndex = 1;
-            const maxImage = userDoubles > 30 ? 30 : userDoubles;
-            doubleImage.src = `imgs/${currentIndex}.png`;
-
-            const mobileInterval = setInterval(function() {
-                currentIndex++;
-                if (currentIndex > maxImage) {
-                    clearInterval(mobileInterval);
-                    doubleImage.src = `imgs/${maxImage}.png`;
-                } else {
-                    doubleImage.src = `imgs/${currentIndex}.png`;
-                }
-            }, 330); // 330ms interval
-        } else {
-            // Desktop: On hover, cycle at 200ms
-            let intervalId = null;
-            let currentIndex = 1;
-
-            doubleImage.addEventListener('mouseover', function() {
-                // Prevent multiple intervals
-                if (intervalId) return;
-
-                currentIndex = 1;
-                intervalId = setInterval(function() {
-                    if (currentIndex > userDoubles) {
-                        clearInterval(intervalId);
-                        intervalId = null;
-                        return;
-                    }
-                    doubleImage.src = `imgs/${currentIndex}.png`;
-                    currentIndex++;
-                }, 200); // 200ms interval
-            });
-
-            doubleImage.addEventListener('mouseout', function() {
-                if (intervalId) {
-                    clearInterval(intervalId);
-                    intervalId = null;
-                }
-                // Reset to the final image
-                doubleImage.src = `imgs/${userDoubles > 30 ? 30 : userDoubles}.png`;
-            });
-        }
-    }
-});
+       // After the image is in the DOM, add event listeners for hover animation or auto-cycling
+       const doubleImage = document.querySelector('.double-image');
+       if (doubleImage) {
+           if (isMobileDevice()) {
+               // Mobile: Auto-cycling at 330ms upon first load
+               let currentIndex = 1;
+               const maxImage = userDoubles > 30 ? 30 : userDoubles;
+               doubleImage.src = `imgs/${currentIndex}.png`;
+   
+               const mobileInterval = setInterval(function() {
+                   currentIndex++;
+                   if (currentIndex > maxImage) {
+                       clearInterval(mobileInterval);
+                       doubleImage.src = `imgs/${maxImage}.png`;
+                   } else {
+                       doubleImage.src = `imgs/${currentIndex}.png`;
+                   }
+               }, 330); // 330ms interval
+           } else {
+               // Desktop: On hover, cycle at 200ms
+               let intervalId = null;
+               let currentIndex = 1;
+   
+               doubleImage.addEventListener('mouseover', function() {
+                   // Prevent multiple intervals
+                   if (intervalId) return;
+   
+                   currentIndex = 1;
+                   intervalId = setInterval(function() {
+                       if (currentIndex > userDoubles) {
+                           clearInterval(intervalId);
+                           intervalId = null;
+                           return;
+                       }
+                       doubleImage.src = `imgs/${currentIndex}.png`;
+                       currentIndex++;
+                   }, 200); // 200ms interval
+               });
+   
+               doubleImage.addEventListener('mouseout', function() {
+                   if (intervalId) {
+                       clearInterval(intervalId);
+                       intervalId = null;
+                   }
+                   // Reset to the final image
+                   doubleImage.src = `imgs/${userDoubles > 30 ? 30 : userDoubles}.png`;
+               });
+           }
+       }
+   });
