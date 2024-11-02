@@ -35,13 +35,14 @@ body {
 }
 
 .form-group input {
-    width: 90%;
+    width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
     text-align: right; /* Align numbers to the right */
 }
+
 .calculate-btn {
     width: 100%;
     padding: 12px;
@@ -72,58 +73,30 @@ body {
     text-align: center;
 }
 
-.form-group input {
-    /* Existing styles... */
-    text-align: right; /* Align numbers to the right for better readability */
-}
-
-/* Add this at the end of your style.css */
-
 /* New Styles for Image Display */
 
-/* Container for images */
+/* Container for the image */
 .images-container {
     margin-top: 15px;
     display: flex;
     justify-content: center; /* Center the image horizontally */
     align-items: center;
-    /* No need for flex-wrap since we're displaying only one image */
 }
 
 /* Updated image styling */
-.double-image {
-    width: 333px; /* Set to approximately 333px */
-    height: auto; /* Maintain aspect ratio */
-    margin: 10px 0; /* Add vertical spacing */
-    object-fit: contain;
-    display: block; /* Center the image if needed */
-    margin-left: auto;
-    margin-right: auto;
-}
-
-@media (max-width: 768px) {
-    .double-image {
-        width: 200px; /* Adjust size for smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    .double-image {
-        width: 150px; /* Further adjust for very small screens */
-    }
-}
 .double-image {
     width: 333px; /* Set to approximately 333px as requested */
     height: auto; /* Maintain aspect ratio */
     margin: 10px 0; /* Add vertical spacing */
     object-fit: contain;
-    display: block; /* Center the image if needed */
+    display: block; /* Center the image within the container */
     margin-left: auto;
     margin-right: auto;
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: opacity 0.3s ease-in-out; /* Smooth transition for visual feedback */
+    cursor: pointer; /* Change cursor to pointer to indicate interactivity on desktop */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transitions */
 }
 
 .double-image:hover {
     opacity: 0.8; /* Slightly fade the image on hover */
+    transform: scale(1.05); /* Slightly enlarge the image on hover */
 }
