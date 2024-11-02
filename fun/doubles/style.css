@@ -79,16 +79,51 @@ body {
 
 /* Add this at the end of your style.css */
 
-/* Styling for the emoji display */
-.emojis-container {
+/* New Styles for Image Display */
+
+/* Container for images */
+.images-container {
     margin-top: 15px;
     display: flex;
-    flex-wrap: wrap;
-    max-height: 2em * 2; /* Approximate height for 2 rows */
-    overflow: hidden;
+    justify-content: center; /* Center the image horizontally */
+    align-items: center;
+    /* No need for flex-wrap since we're displaying only one image */
 }
 
-.emojis-container span {
-    font-size: 24px; /* Adjust size as needed */
-    margin: 2px;
+/* Updated image styling */
+.double-image {
+    width: 333px; /* Set to approximately 333px */
+    height: auto; /* Maintain aspect ratio */
+    margin: 10px 0; /* Add vertical spacing */
+    object-fit: contain;
+    display: block; /* Center the image if needed */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 768px) {
+    .double-image {
+        width: 200px; /* Adjust size for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .double-image {
+        width: 150px; /* Further adjust for very small screens */
+    }
+}
+.double-image {
+    width: 333px; /* Set to approximately 333px as requested */
+    height: auto; /* Maintain aspect ratio */
+    margin: 10px 0; /* Add vertical spacing */
+    object-fit: contain;
+    display: block; /* Center the image if needed */
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: opacity 0.3s ease-in-out; /* Smooth transition for visual feedback */
+}
+
+.double-image:hover {
+    opacity: 0.8; /* Slightly fade the image on hover */
 }

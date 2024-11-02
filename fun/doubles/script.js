@@ -1,5 +1,4 @@
 // JavaScript for Net Worth Doubles Calculator
-// https://www.empower.com/the-currency/life/average-net-worth-by-age
 
 // Mapping of age decades to average doubles
 const averageDoublesTable = {
@@ -30,15 +29,15 @@ const netWorthInputField = document.getElementById('netWorth');
 netWorthInputField.addEventListener('input', function(e) {
     const cursorPosition = netWorthInputField.selectionStart;
     const rawValue = removeCommas(netWorthInputField.value);
-    
+
     // Allow only digits
     if (!/^\d*$/.test(rawValue)) {
         netWorthInputField.value = addCommas(rawValue.replace(/\D/g, ''));
         return;
     }
-    
+
     netWorthInputField.value = addCommas(rawValue);
-    
+
     // Adjust cursor position
     const commasBeforeCursor = (netWorthInputField.value.slice(0, cursorPosition).match(/,/g) || []).length;
     netWorthInputField.selectionEnd = cursorPosition + commasBeforeCursor;
@@ -119,19 +118,12 @@ document.getElementById('doublesForm').addEventListener('submit', function(e) {
         additionalLine = `Double ${doublesToBillion > 0 ? doublesToBillion : 0} more times to become a billionaire.`;
     }
 
-    // Generate emojis based on userDoubles
-    let emojisHTML = '';
+    // Generate a single image based on userDoubles
+    let imagesHTML = '';
     if (userDoubles > 0) {
-        const maxEmojis = 40; // Maximum of 40 emojis (20 per row * 2 rows)
-        const displayDoubles = userDoubles > maxEmojis ? maxEmojis : userDoubles;
-        let emojis = '💵'.repeat(displayDoubles);
-
-        // Insert <br> after 20 emojis to create two rows
-        if (displayDoubles > 20) {
-            emojis = '💵'.repeat(20) + '<br>' + '💵'.repeat(displayDoubles - 20);
-        }
-
-        emojisHTML = `<div class="emojis-container">${emojis}</div>`;
+        const maxImage = 30; // Maximum image number available
+        const displayDoubles = userDoubles > maxImage ? maxImage : userDoubles;
+        imagesHTML = `<div class="images-container"><img src="imgs/${displayDoubles}.png" alt="Double ${displayDoubles}" class="double-image"></div>`;
     }
 
     // Display the results
@@ -142,7 +134,39 @@ document.getElementById('doublesForm').addEventListener('submit', function(e) {
         resultHTML += `<p>Average doubles data not available for your age group.</p>`;
     }
     resultHTML += `<p>${additionalLine}</p>`;
-    resultHTML += emojisHTML;
+    resultHTML += imagesHTML;
 
     document.getElementById('result').innerHTML = resultHTML;
+
+    // After the image is in the DOM, add event listeners for hover animation
+    const doubleImage = document.querySelector('.double-image');
+    if (doubleImage) {
+        let intervalId = null;
+        let currentIndex = 1;
+
+        doubleImage.addEventListener('mouseover', function() {
+            // Prevent multiple intervals
+            if (intervalId) return;
+
+            currentIndex = 1;
+            intervalId = setInterval(function() {
+                if (currentIndex > userDoubles) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                    return;
+                }
+                doubleImage.src = `imgs/${currentIndex}.png`;
+                currentIndex++;
+            }, 200); // 100ms interval
+        });
+
+        doubleImage.addEventListener('mouseout', function() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+            // Reset to the final image
+            doubleImage.src = `imgs/${userDoubles > 30 ? 30 : userDoubles}.png`;
+        });
+    }
 });
