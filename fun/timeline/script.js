@@ -2,38 +2,41 @@ document.addEventListener('DOMContentLoaded', function () {
     const timeline = document.getElementById('timeline');
     let zoomLevel = 1; // Initial zoom level (1x)
 
-    // CSV file URL
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRGfo5oxrOUKeb0mOilUhAO5DqZCvXmQwvkpAcoBqAPC0kOutgAQ23Cx_rm2WJeQQ8rosO1f_QyyhCP/pub?gid=0&single=true&output=csv';
+    // HTML page URL (published as a webpage)
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRGfo5oxrOUKeb0mOilUhAO5DqZCvXmQwvkpAcoBqAPC0kOutgAQ23Cx_rm2WJeQQ8rosO1f_QyyhCP/pubhtml?gid=0&single=true';
 
-    // Create the horizontal line for the timeline
-    const line = document.createElement('div');
-    line.classList.add('timeline-line');
-    document.querySelector('.timeline-container').appendChild(line);
-
-    // Function to load and parse CSV data
-    async function loadCSV() {
+    // Function to load and parse HTML page data
+    async function loadHTMLSheet() {
         try {
-            const response = await fetch(csvUrl);
-            const csvText = await response.text();
-            parseCSV(csvText);
+            const response = await fetch(sheetUrl);
+            const htmlText = await response.text();
+            parseHTML(htmlText);
         } catch (error) {
-            console.error('Error loading CSV data:', error);
+            console.error('Error loading HTML page:', error);
         }
     }
 
-    // Function to parse CSV text data and populate the timeline
-    function parseCSV(data) {
-        const rows = data.split('\n').slice(1); // Skip header row
+    // Function to parse HTML text and populate the timeline
+    function parseHTML(data) {
+        // Create a new DOM parser to parse the HTML
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, 'text/html');
+
+        // Select table rows where the data is stored in the published sheet
+        const rows = doc.querySelectorAll('table tbody tr');
+
         rows.forEach((row, index) => {
-            const columns = row.split(',');
-            const year = columns[0];
-            const inventions = columns[1];
-            const worldEvents = columns[2];
-            const localEvents = columns[3];
-            const population = columns[4];
-            const density = columns[5];
-            const urbanPop = columns[6];
-            const inflation = columns[9];
+            const cells = row.querySelectorAll('td');
+            if (cells.length < 10) return; // Skip rows with insufficient data
+
+            const year = cells[0].innerText.trim();
+            const inventions = cells[1].innerText.trim();
+            const worldEvents = cells[2].innerText.trim();
+            const localEvents = cells[3].innerText.trim();
+            const population = cells[4].innerText.trim();
+            const density = cells[5].innerText.trim();
+            const urbanPop = cells[6].innerText.trim();
+            const inflation = cells[9].innerText.trim();
 
             // Only create an item if the year and some data exist
             if (year && (inventions || worldEvents || localEvents)) {
@@ -94,6 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Load CSV data on page load
-    loadCSV();
+    // Load HTML sheet data on page load
+    loadHTMLSheet();
 });
