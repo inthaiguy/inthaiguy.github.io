@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.timeline-container {
+    width: 100%;
+    height: 100vh;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.timeline {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.timeline-item {
+    flex-shrink: 0;
+    width: 150px; /* Adjust based on desired width of each item */
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: center;
+    font-size: 1rem;
+    transition: font-size 0.2s;
+}
+
+/* Styles for zoomed-in and zoomed-out views */
+.zoomed-in .timeline-item {
+    width: 300px;
+    font-size: 1.2rem;
+}
+
+.zoomed-out .timeline-item {
+    width: 100px;
+    font-size: 0.8rem;
+}
