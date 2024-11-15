@@ -14,19 +14,32 @@ body {
     height: 100vh;
     overflow-x: scroll;
     overflow-y: hidden;
-    white-space: nowrap;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .timeline {
     display: flex;
     align-items: center;
     height: 100%;
+    position: relative;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #333;
+    z-index: 1;
 }
 
 .timeline-item {
     flex-shrink: 0;
-    width: 150px; /* Adjust based on desired width of each item */
+    width: 150px;
     margin: 10px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -35,6 +48,31 @@ body {
     text-align: center;
     font-size: 1rem;
     transition: font-size 0.2s;
+    position: relative;
+    z-index: 2;
+    top: -50px;
+}
+
+/* Styles for dots and year markers */
+.timeline-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #333;
+    border-radius: 50%;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.timeline-year {
+    position: absolute;
+    color: #333;
+    font-size: 0.9rem;
+    transform: rotate(-45deg);
+    transform-origin: top left;
+    z-index: 2;
+    top: calc(50% + 15px);
 }
 
 /* Styles for zoomed-in and zoomed-out views */
