@@ -2,15 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- CSP Meta Tag -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Timeline</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="timeline-container">
-        <div class="timeline" id="timeline">
-            <!-- Timeline Items will be dynamically loaded here by JavaScript -->
-        </div>
+    <div id="timeline-container">
+        <div id="timeline"></div>
+    </div>
+
+    <!-- Tooltip for Information Boxes -->
+    <div id="tooltip" class="hidden">
+        <p id="tooltip-content"></p>
     </div>
 
     <script src="script.js"></script>

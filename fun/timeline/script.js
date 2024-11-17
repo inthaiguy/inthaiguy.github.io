@@ -1,155 +1,189 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const timeline = document.getElementById('timeline');
-    let zoomLevel = 1; // Initial zoom level (1x)
+// Configuration
+const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRGfo5oxrOUKeb0mOilUhAO5DqZCvXmQwvkpAcoBqAPC0kOutgAQ23Cx_rm2WJeQQ8rosO1f_QyyhCP/pub?gid=0&single=true&output=csv';
 
-    // HTML page URL (published as a webpage)
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRGfo5oxrOUKeb0mOilUhAO5DqZCvXmQwvkpAcoBqAPC0kOutgAQ23Cx_rm2WJeQQ8rosO1f_QyyhCP/pubhtml?gid=0&single=true';
-
-    // Function to load and parse HTML page data
-    async function loadHTMLSheet() {
-        try {
-            const response = await fetch(sheetUrl);
-            const htmlText = await response.text();
-            parseHTML(htmlText);
-        } catch (error) {
-            console.error('Error loading HTML page:', error);
+// Fetch CSV data from Google Sheets
+async function fetchData(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        const csvText = await response.text();
+        return parseCSV(csvText);
+    } catch (error) {
+        console.error('Error fetching the Google Sheet:', error);
+        return [];
     }
+}
 
-    // Function to parse HTML text and populate the timeline
-    function parseHTML(data) {
-        // Create a new DOM parser to parse the HTML
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(data, 'text/html');
-
-        // Select table rows where the data is stored in the published sheet
-        const rows = doc.querySelectorAll('table tbody tr');
-
-        rows.forEach((row, index) => {
-            const cells = row.querySelectorAll('td');
-            if (cells.length < 10) return; // Skip rows with insufficient data
-
-            const year = cells[0].innerText.trim();
-            const inventions = cells[1].innerText.trim();
-            const worldEvents = cells[2].innerText.trim();
-            const localEvents = cells[3].innerText.trim();
-            const population = cells[4].innerText.trim();
-            const density = cells[5].innerText.trim();
-            const urbanPop = cells[6].innerText.trim();
-            const inflation = cells[9].innerText.trim();
-
-            // Only create an item if the year and some data exist
-            if (year && (inventions || worldEvents || localEvents)) {
-                const item = document.createElement('div');
-                item.classList.add('timeline-item');
-                item.innerHTML = `<strong>${year}</strong><br>
-                                  <em>Inventions:</em> ${inventions || 'N/A'}<br>
-                                  <em>World Events:</em> ${worldEvents || 'N/A'}<br>
-                                  <em>Local Events:</em> ${localEvents || 'N/A'}<br>
-                                  <em>Population:</em> ${population || 'N/A'}<br>
-                                  <em>Density:</em> ${density || 'N/A'}<br>
-                                  <em>Urban Pop %:</em> ${urbanPop || 'N/A'}<br>
-                                  <em>Inflation Rate:</em> ${inflation || 'N/A'}`;
-                timeline.appendChild(item);
-
-                // Create dot for the timeline line
-                const dot = document.createElement('div');
-                dot.classList.add('timeline-dot');
-                dot.style.left = `${index * 200}px`; // Space dots evenly based on index
-                document.querySelector('.timeline-container').appendChild(dot);
-
-                // Create year marker near the dot
-                const yearMarker = document.createElement('div');
-                yearMarker.classList.add('timeline-year');
-                yearMarker.style.left = `${index * 200}px`;
-                yearMarker.textContent = year;
-                document.querySelector('.timeline-container').appendChild(yearMarker);
-            }
+// Parse CSV to JSON
+function parseCSV(data) {
+    const lines = data.split('\n').filter(line => line.trim() !== '');
+    const headers = lines[0].split(',').map(header => header.trim());
+    const rows = lines.slice(1);
+    const result = rows.map(row => {
+        const values = row.split(',').map(value => value.trim());
+        let obj = {};
+        headers.forEach((header, index) => {
+            obj[header] = values[index] || '';
         });
-    }
+        return obj;
+    });
+    return result;
+}
 
-    // Zoom in and out functionality
-    function zoomIn() {
-        zoomLevel = Math.min(zoomLevel + 0.1, 2); // Max zoom level 2x
-        updateZoom();
-    }
+// Render Timeline
+function renderTimeline(data) {
+    const timeline = document.getElementById('timeline');
 
-    function zoomOut() {
-        zoomLevel = Math.max(zoomLevel - 0.1, 0.5); // Min zoom level 0.5x
-        updateZoom();
-    }
-
-    function updateZoom() {
-        document.body.style.fontSize = `${zoomLevel}rem`;
-        timeline.style.transform = `scale(${zoomLevel})`;
-    }
-
-    // Add keyboard navigation
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'PageDown') {
-            timeline.scrollBy({ left: 300, behavior: 'smooth' });
-        } else if (e.key === 'PageUp') {
-            timeline.scrollBy({ left: -300, behavior: 'smooth' });
-        } else if (e.key === '+' || e.key === '=') {
-            zoomIn();
-        } else if (e.key === '-') {
-            zoomOut();
-        }
+    // Sort data by Year (assuming numerical)
+    data.sort((a, b) => {
+        const yearA = parseInt(a['Year'], 10);
+        const yearB = parseInt(b['Year'], 10);
+        return yearA - yearB;
     });
 
-    // Load HTML sheet data on page load
-    loadHTMLSheet();
-});
+    data.forEach(item => {
+        const year = item['Year'];
+        const event = item['Event'];
 
-// Function to parse HTML text and populate the timeline
-function parseHTML(data) {
-    // Create a new DOM parser to parse the HTML
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(data, 'text/html');
+        if (year && event) { // Only display if both Year and Event are present
+            const yearDot = document.createElement('div');
+            yearDot.className = 'year-dot';
+            yearDot.dataset.event = event;
 
-    // Select table rows where the data is stored in the published sheet
-    const rows = doc.querySelectorAll('table tbody tr');
+            const dot = document.createElement('div');
+            dot.className = 'dot';
 
-    rows.forEach((row, index) => {
-        const cells = row.querySelectorAll('td');
-        if (cells.length < 10) return; // Skip rows with insufficient data
+            const label = document.createElement('div');
+            label.className = 'year-label';
+            label.textContent = year;
 
-        const year = cells[0].innerText.trim();
-        const inventions = cells[1].innerText.trim() !== 'N/A' ? `<em>Inventions:</em> ${cells[1].innerText.trim()}<br>` : '';
-        const worldEvents = cells[2].innerText.trim() !== 'N/A' ? `<em>World Events:</em> ${cells[2].innerText.trim()}<br>` : '';
-        const localEvents = cells[3].innerText.trim() !== 'N/A' ? `<em>Local Events:</em> ${cells[3].innerText.trim()}<br>` : '';
-        const population = cells[4].innerText.trim() !== 'N/A' ? `<em>Population:</em> ${cells[4].innerText.trim()}<br>` : '';
-        const density = cells[5].innerText.trim() !== 'N/A' ? `<em>Density:</em> ${cells[5].innerText.trim()}<br>` : '';
-        const urbanPop = cells[6].innerText.trim() !== 'N/A' ? `<em>Urban Pop %:</em> ${cells[6].innerText.trim()}<br>` : '';
-        const inflation = cells[9].innerText.trim() !== 'N/A' ? `<em>Inflation Rate:</em> ${cells[9].innerText.trim()}<br>` : '';
-
-        // Skip creating a timeline item if all fields are empty or "N/A"
-        if (!year || (!inventions && !worldEvents && !localEvents && !population && !density && !urbanPop && !inflation)) return;
-
-        // Create the timeline item
-        const item = document.createElement('div');
-        item.classList.add('timeline-item');
-        item.innerHTML = `<strong>${year}</strong><br>
-                          ${inventions}
-                          ${worldEvents}
-                          ${localEvents}
-                          ${population}
-                          ${density}
-                          ${urbanPop}
-                          ${inflation}`;
-        timeline.appendChild(item);
-
-        // Create dot for the timeline line
-        const dot = document.createElement('div');
-        dot.classList.add('timeline-dot');
-        dot.style.left = `${index * 200}px`; // Space dots evenly based on index
-        document.querySelector('.timeline-container').appendChild(dot);
-
-        // Create year marker near the dot
-        const yearMarker = document.createElement('div');
-        yearMarker.classList.add('timeline-year');
-        yearMarker.style.left = `${index * 200}px`;
-        yearMarker.textContent = year;
-        document.querySelector('.timeline-container').appendChild(yearMarker);
+            yearDot.appendChild(dot);
+            yearDot.appendChild(label);
+            timeline.appendChild(yearDot);
+        }
     });
 }
+
+// Tooltip Handling
+function handleTooltip() {
+    const tooltip = document.getElementById('tooltip');
+    const tooltipContent = document.getElementById('tooltip-content');
+
+    document.querySelectorAll('.year-dot').forEach(dot => {
+        dot.addEventListener('mouseenter', (e) => {
+            const content = dot.dataset.event;
+            if (content) {
+                tooltipContent.textContent = content;
+                tooltip.classList.remove('hidden');
+                tooltip.classList.add('visible');
+            }
+        });
+
+        dot.addEventListener('mousemove', (e) => {
+            const tooltipWidth = tooltip.offsetWidth;
+            const tooltipHeight = tooltip.offsetHeight;
+            let left = e.clientX + 20;
+            let top = e.clientY - tooltipHeight - 20;
+
+            // Prevent tooltip from going off the right edge
+            if (left + tooltipWidth > window.innerWidth) {
+                left = window.innerWidth - tooltipWidth - 10;
+            }
+
+            // Prevent tooltip from going above the viewport
+            if (top < 0) {
+                top = e.clientY + 20;
+            }
+
+            tooltip.style.top = `${top}px`;
+            tooltip.style.left = `${left}px`;
+        });
+
+        dot.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('visible');
+            tooltip.classList.add('hidden');
+        });
+    });
+}
+
+// Zoom and Scroll Functionality
+let scale = 1;
+const timelineContainer = document.getElementById('timeline-container');
+const timelineElement = document.getElementById('timeline');
+
+function zoomTimeline(delta) {
+    scale += delta;
+    scale = Math.min(Math.max(scale, 0.5), 3); // Limit zoom between 0.5x and 3x
+    timelineElement.style.transform = `translateY(-50%) scale(${scale})`;
+}
+
+function scrollTimeline(direction) {
+    const scrollAmount = 100 * scale;
+    timelineContainer.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+}
+
+function handleKeyboardEvents() {
+    window.addEventListener('keydown', (e) => {
+        switch (e.key) {
+            case 'PageDown':
+                e.preventDefault();
+                scrollTimeline(1); // Scroll right (future)
+                break;
+            case 'PageUp':
+                e.preventDefault();
+                scrollTimeline(-1); // Scroll left (past)
+                break;
+            case '+':
+            case '=':
+                e.preventDefault();
+                zoomTimeline(0.1);
+                break;
+            case '-':
+                e.preventDefault();
+                zoomTimeline(-0.1);
+                break;
+            default:
+                break;
+        }
+    });
+}
+
+function handleMouseWheel() {
+    timelineContainer.addEventListener('wheel', (e) => {
+        if (e.ctrlKey) {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                zoomTimeline(0.1);
+            } else {
+                zoomTimeline(-0.1);
+            }
+        } else {
+            // Horizontal scroll
+            timelineContainer.scrollBy({
+                left: e.deltaY,
+                behavior: 'smooth'
+            });
+        }
+    }, { passive: false });
+}
+
+// Initialize Timeline
+async function init() {
+    const data = await fetchData(sheetURL);
+    if (data.length === 0) {
+        console.error('No data available to render the timeline.');
+        return;
+    }
+    renderTimeline(data);
+    handleTooltip();
+    handleKeyboardEvents();
+    handleMouseWheel();
+}
+
+// Ensure the DOM is loaded before initializing
+document.addEventListener('DOMContentLoaded', init);

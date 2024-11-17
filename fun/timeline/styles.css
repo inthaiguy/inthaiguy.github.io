@@ -1,3 +1,4 @@
+/* Basic Reset */
 * {
     margin: 0;
     padding: 0;
@@ -5,83 +6,95 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
     overflow: hidden;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
 }
 
-.timeline-container {
-    width: 100%;
+#timeline-container {
+    width: 100vw;
     height: 100vh;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: hidden;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
 }
 
-.timeline {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    position: relative;
-}
-
-.timeline-line {
+#timeline {
     position: absolute;
     top: 50%;
     left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #333;
-    z-index: 1;
+    transform: translateY(-50%) scale(1);
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+    transform-origin: left center;
 }
 
-.timeline-item {
-    flex-shrink: 0;
-    width: 150px;
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    text-align: center;
-    font-size: 1rem;
-    transition: font-size 0.2s;
+.year-dot {
     position: relative;
-    z-index: 2;
-    top: -50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 50px;
+    cursor: pointer;
+    transition: transform 0.2s;
 }
 
-/* Styles for dots and year markers */
-.timeline-dot {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: #333;
+.year-dot:hover {
+    transform: scale(1.2);
+}
+
+.year-dot .dot {
+    width: 20px;
+    height: 20px;
+    background-color: #000;
     border-radius: 50%;
-    z-index: 2;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-bottom: 10px;
 }
 
-.timeline-year {
-    position: absolute;
+.year-dot .year-label {
+    font-size: 16px;
+    text-align: center;
+    white-space: nowrap;
     color: #333;
-    font-size: 0.9rem;
-    transform: rotate(-45deg);
-    transform-origin: top left;
-    z-index: 2;
-    top: calc(50% + 15px);
 }
 
-/* Styles for zoomed-in and zoomed-out views */
-.zoomed-in .timeline-item {
-    width: 300px;
-    font-size: 1.2rem;
+#tooltip {
+    position: absolute;
+    padding: 10px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    border-radius: 5px;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    max-width: 200px;
+    z-index: 1000;
 }
 
-.zoomed-out .timeline-item {
-    width: 100px;
-    font-size: 0.8rem;
+.hidden {
+    opacity: 0;
+}
+
+.visible {
+    opacity: 1;
+}
+
+/* Responsive Text */
+@media (max-width: 1200px) {
+    .year-dot .year-label {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 800px) {
+    .year-dot .year-label {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 500px) {
+    .year-dot .year-label {
+        font-size: 10px;
+    }
 }
