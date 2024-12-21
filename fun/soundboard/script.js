@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const soundboard = document.getElementById("soundboard");
-    const soundsPath = "/sounds";
+  // Base URL for the sounds folder on GitHub Pages
+   const soundsPath = "https://inthaiguy.github.io/fun/soundboard/sounds/";
     
     // Fetch sound files from the sounds directory
     fetch(soundsPath)
