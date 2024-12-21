@@ -1,22 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const soundboard = document.getElementById("soundboard");
   const soundsPath = "./sounds/";
-  
-  // Fetch sound files from the sounds directory
-  fetch(soundsPath)
-    .then(response => response.text())
-    .then(data => {
-      const parser = new DOMParser();
-      const htmlDoc = parser.parseFromString(data, 'text/html');
-      const soundFiles = Array.from(htmlDoc.querySelectorAll("a"))
-        .map(link => link.getAttribute("href"))
-        .filter(file => file.endsWith(".mp3"));
 
-      if (soundFiles.length === 0) {
-        soundboard.innerHTML = "<p>No sounds available</p>";
-        return;
-      }
-
+  fetch("/.netlify/functions/list-sounds")
+    .then(response => response.json())
+    .then(soundFiles => {
       soundFiles.forEach(fileName => {
         const formattedName = fileName.replace(/_/g, " ").replace(".mp3", "");
         const button = document.createElement("button");
@@ -31,5 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
         soundboard.appendChild(button);
       });
     })
-    .catch(error => console.error("Error loading sounds:", error));
+    .catch(error => {
+      console.error("Error fetching sound files:", error);
+      soundboard.innerHTML = "<p>Unable to load sounds</p>";
+    });
 });
