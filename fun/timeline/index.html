@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- CSP Meta Tag -->
+    <!-- Content Security Policy Meta Tag -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Timeline</title>
@@ -15,9 +15,10 @@
 
     <!-- Tooltip for Information Boxes -->
     <div id="tooltip" class="hidden">
-        <p id="tooltip-content"></p>
+        <div id="tooltip-content"></div>
     </div>
 
+    <!-- Link to External JavaScript File -->
     <script src="script.js"></script>
 </body>
 </html>
