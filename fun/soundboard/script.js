@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const soundboard = document.getElementById("soundboard");
-    const soundsPath = "./sounds/";
+    const soundsPath = "sounds/";
     
     // Fetch sound files from the sounds directory
     fetch(soundsPath)
