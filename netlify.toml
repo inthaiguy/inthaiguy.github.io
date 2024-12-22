@@ -4,3 +4,11 @@ directory = "custom-functions-folder"
 [[edge_functions]]
 function = "test"
 path = "/test"
+
+[[edge_functions]]
+function = "imgexternal"
+path = "/imgext"
+
+[[edge_functions]]
+function = "listsounds"
+path = "/listsounds"
