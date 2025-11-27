@@ -1,0 +1,377 @@
+/* The Kleier Story - Notion-style CSS */
+
+:root {
+    --text-primary: #37352f;
+    --text-secondary: #6b6b6b;
+    --text-light: #9b9a97;
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7f6f3;
+    --border-color: #e9e9e7;
+    --accent: #2f80ed;
+    --max-width: 720px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Charter', Georgia, serif;
+    line-height: 1.7;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+}
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Header */
+header {
+    padding: 40px 0 60px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 60px;
+}
+
+.header-image {
+    margin: 0 0 40px 0;
+}
+
+.header-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+header .subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 16px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+
+header .meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+header .intro {
+    margin-top: 40px;
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Section styles */
+section {
+    margin-bottom: 80px;
+}
+
+h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border-color);
+}
+
+h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+h3 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-top: 48px;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+h4 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-top: 40px;
+    margin-bottom: 16px;
+}
+
+p {
+    margin-bottom: 1.5em;
+}
+
+/* Subtitle note styling */
+.subtitle-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+/* Images */
+figure {
+    margin: 40px 0;
+}
+
+figure img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    display: block;
+}
+
+figure.small {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+figure.medium {
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+figcaption {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    margin-top: 12px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.caption-center {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.5;
+    margin-top: -24px;
+    margin-bottom: 32px;
+}
+
+/* Two-column images */
+.image-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 40px 0;
+}
+
+.image-row figure {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .image-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Callout boxes */
+.callout {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    padding: 24px;
+    margin: 32px 0;
+}
+
+.callout p:last-child {
+    margin-bottom: 0;
+}
+
+/* Lists */
+ul, ol {
+    margin-bottom: 1.5em;
+    padding-left: 1.5em;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+/* Divider */
+hr {
+    border: none;
+    text-align: center;
+    margin: 60px 0;
+}
+
+hr::before {
+    content: "• • •";
+    color: var(--text-light);
+    letter-spacing: 1em;
+}
+
+/* Family section headers */
+.family-header {
+    text-align: center;
+    padding: 60px 0;
+    margin: 60px 0;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.family-header h2 {
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.family-header .emoji {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+}
+
+/* Map Image */
+.map-image {
+    margin: 60px 0;
+}
+
+.map-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Sources */
+.sources {
+    background: var(--bg-secondary);
+    padding: 40px;
+    border-radius: 4px;
+    margin-top: 60px;
+}
+
+.sources h2 {
+    border: none;
+    padding: 0;
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.sources ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sources li {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sources li:last-child {
+    border-bottom: none;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 60px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8125rem;
+    color: var(--text-light);
+    border-top: 1px solid var(--border-color);
+    margin-top: 80px;
+}
+
+/* Blockquote */
+blockquote {
+    border-left: 3px solid var(--border-color);
+    padding-left: 24px;
+    margin: 32px 0;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+/* Links */
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    header {
+        padding: 48px 0 40px;
+    }
+
+    h1 {
+        font-size: 1.875rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    .container {
+        padding: 0 16px;
+    }
+
+    .family-header {
+        padding: 40px 20px;
+        margin: 40px 0;
+    }
+
+    .sources {
+        padding: 24px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .container {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    header {
+        padding: 40px 0;
+    }
+
+    .family-header {
+        background: none;
+        border: 2px solid var(--border-color);
+    }
+
+    figure img {
+        max-height: 400px;
+        object-fit: contain;
+    }
+}
