@@ -63,10 +63,16 @@ function updateClocks() {
         const clockElement = document.getElementById(`count${index + 1}`);
         const descriptorElement = clockElement.nextElementSibling;
 
-        // Update the clock with years and days, wrapping "years" and "days" separately
+        // Update the clock with years and days, with labels underneath
         clockElement.innerHTML = `
-            <span class="number">${years}</span> <span class="unit">years</span>, 
-            <span class="number">${days}</span> <span class="unit">days</span>
+            <div class="time-unit">
+                <span class="number">${years}</span>
+                <span class="unit">years</span>
+            </div>
+            <div class="time-unit">
+                <span class="number">${days}</span>
+                <span class="unit">days</span>
+            </div>
         `;
 
         // Update the descriptor text
