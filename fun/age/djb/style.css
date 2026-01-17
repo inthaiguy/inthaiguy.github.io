@@ -1,0 +1,111 @@
+/* Full-screen dashboard grid layout */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2px;
+    width: 100%;
+    height: 100%;
+}
+
+.clock-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #333;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Container for the clock display */
+.clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Each time unit (number + label stacked) */
+.time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Numbers in the clock (large) */
+.number {
+    font-size: 48px;
+    font-weight: bolder;
+    color: #00ff00;
+    letter-spacing: 3px;
+}
+
+/* "years" and "days" text (underneath) */
+.unit {
+    font-size: 14px;
+    color: #00ff00;
+    margin-top: 4px;
+}
+
+.small-font {
+    font-size: 22px;
+    color: #999;
+    margin-top: 10px;
+}
+
+/* Make the grid responsive */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+    }
+
+    .clock {
+        gap: 15px;
+    }
+
+    .number {
+        font-size: 32px;
+    }
+
+    .unit {
+        font-size: 12px;
+    }
+
+    .small-font {
+        font-size: 14px;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .clock {
+        gap: 10px;
+    }
+
+    .number {
+        font-size: 28px;
+    }
+
+    .unit {
+        font-size: 10px;
+    }
+
+    .small-font {
+        font-size: 12px;
+    }
+}
