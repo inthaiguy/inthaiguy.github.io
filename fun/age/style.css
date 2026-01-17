@@ -31,6 +31,21 @@ html, body {
     box-sizing: border-box;
 }
 
+/* Container for the clock display */
+.clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Each time unit (number + label stacked) */
+.time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 /* Numbers in the clock (large) */
 .number {
     font-size: 48px;
@@ -39,11 +54,11 @@ html, body {
     letter-spacing: 3px;
 }
 
-/* "years" and "days" text (half size) */
+/* "years" and "days" text (underneath) */
 .unit {
-    font-size: 12px;
+    font-size: 14px;
     color: #00ff00; /* Same color but smaller */
-    vertical-align: top; /* Align it better next to numbers */
+    margin-top: 4px;
 }
 
 .small-font {
@@ -52,7 +67,7 @@ html, body {
     margin-top: 10px;
 }
 
-/* Make the grid responsive: 
+/* Make the grid responsive:
    On smaller screens, change to a single-column layout */
 @media (max-width: 768px) {
     .dashboard-grid {
@@ -60,12 +75,16 @@ html, body {
         grid-template-rows: none; /* Automatically adjust rows */
     }
 
+    .clock {
+        gap: 15px;
+    }
+
     .number {
         font-size: 32px;
     }
 
     .unit {
-        font-size: 16px;
+        font-size: 12px;
     }
 
     .small-font {
@@ -75,12 +94,16 @@ html, body {
 
 /* Extra small screens: Adjust font size even more for very small devices */
 @media (max-width: 480px) {
+    .clock {
+        gap: 10px;
+    }
+
     .number {
         font-size: 28px;
     }
 
     .unit {
-        font-size: 14px;
+        font-size: 10px;
     }
 
     .small-font {
