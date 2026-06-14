@@ -20,21 +20,29 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
-        /* Container styling */
-        .container {
+        .links-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Box styling */
+        .box {
             background-color: white;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 20px;
-            max-width: 300px;
+            width: 260px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         /* Title styling */
-        .container h2 {
+        .box h2 {
             font-size: 20px;
             font-weight: bold;
             color: #2d2d56;
@@ -44,16 +52,17 @@
         }
 
         /* Link styling */
-        .container ul {
+        .box ul {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
-        .container ul li {
+        .box ul li {
             margin-bottom: 10px;
         }
 
-        .container ul li a {
+        .box ul li a {
             text-decoration: none;
             font-size: 16px;
             color: #595c8a;
@@ -61,27 +70,45 @@
             transition: color 0.3s ease;
         }
 
-        .container ul li a:hover {
+        .box ul li a:hover {
             color: #2d2d56;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Fun Stuff </h2>
-        <ul>
-            <li><a href="doubles/">💲 Net Worth Doubles</a></li>
-            <li><a href="clicker.html">🖱️ Clicker game</a></li>
-            <li><a href="emojitype/">🍎 Emoji Type</a></li>
-            <li><a href="https://redtshirt.com/">🔴 red tshirt</a></li>
-            <li><a href="spinner/">🌈 Spinner</a></li>
-            <li><a href="quirky/">🤷‍♂️ Quirky Type</a></li>
-            <li><a href="speedword/">⌨️ Speed Word </a></li>
-            <li><a href="age/">🧓🏻 Dad Age </a></li>
-            <li><a href="https://caius787.github.io/">🤷‍♂️ CJB</a></li>
-            <li><a href="https://inthaiguy.github.io/">🔙</a></li>
-        </ul>
+    <div class="links-grid">
+        <div class="box">
+            <h2>Bryan</h2>
+            <ul>
+                <li><a href="https://b.ourok.com/">👤 b.ourok.com</a></li>
+                <li><a href="https://www.oocities.org/thetropics/6656/">🏝️ 2002 Site</a></li>
+                <li><a href="age/">🧓🏻 Dad Age</a></li>
+                <li><a href="../kleierstory/">📜 Kleier Story Bulletin</a></li>
+                <li><a href="../tesla/">🚗 Tesla Dashboard</a></li>
+            </ul>
+        </div>
+
+        <div class="box">
+            <h2>Fun</h2>
+            <ul>
+                <li><a href="doubles/">💲 Net Worth Doubles</a></li>
+                <li><a href="clicker.html">🖱️ Clicker game</a></li>
+                <li><a href="emojitype/">🍎 Emoji Type</a></li>
+                <li><a href="https://redtshirt.com/">🔴 red tshirt</a></li>
+                <li><a href="spinner/">🌈 Spinner</a></li>
+                <li><a href="quirky/">🤷‍♂️ Quirky Type</a></li>
+                <li><a href="speedword/">⌨️ Speed Word</a></li>
+            </ul>
+        </div>
+
+        <div class="box">
+            <h2>Family</h2>
+            <ul>
+                <li><a href="https://cjb.ourok.com/">👦 CJB</a></li>
+                <li><a href="https://d.ourok.com/">👧 DJB</a></li>
+            </ul>
+        </div>
     </div>
 
 </body>
