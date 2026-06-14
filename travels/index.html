@@ -19,7 +19,10 @@
         <section class="meta-panel">
             <div class="timeline-controls">
                 <button id="play-pause" type="button">Play</button>
-                <input id="timeline" type="range" min="0" max="0" value="0">
+                <div class="timeline-track">
+                    <input id="timeline" type="range" min="0" max="0" value="0">
+                    <div id="timeline-tooltip" aria-hidden="true">--</div>
+                </div>
                 <label class="speed-control">
                     Speed
                     <input id="speed" type="range" min="1" max="10" value="8">
@@ -37,6 +40,6 @@
     </main>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=4"></script>
+    <script src="script.js?v=6"></script>
 </body>
 </html>

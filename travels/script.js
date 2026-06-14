@@ -22,6 +22,7 @@ const defaultMapView = {
     zoom: 6
 };
 const speedSteps = [1000, 700, 500, 350, 250, 180, 130, 100, 70, 50];
+const milesPerKilometer = 0.621371;
 
 function parseCsv(csvText) {
     const rows = [];
@@ -94,6 +95,31 @@ function formatDate(date) {
     });
 }
 
+function formatTooltipDate(date) {
+    return date.toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    });
+}
+
+function formatMiles(value) {
+    return Math.round(value).toLocaleString();
+}
+
+function distanceMiles(firstLatLng, secondLatLng) {
+    const earthRadiusKilometers = 6371;
+    const toRadians = value => value * Math.PI / 180;
+    const [firstLat, firstLng] = firstLatLng.map(toRadians);
+    const [secondLat, secondLng] = secondLatLng.map(toRadians);
+    const latDelta = secondLat - firstLat;
+    const lngDelta = secondLng - firstLng;
+    const a = Math.sin(latDelta / 2) ** 2
+        + Math.cos(firstLat) * Math.cos(secondLat) * Math.sin(lngDelta / 2) ** 2;
+
+    return earthRadiusKilometers * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * milesPerKilometer;
+}
+
 function buildCheckins(rows, sourceName) {
     return rows.slice(1)
         .map(row => {
@@ -114,6 +140,20 @@ function buildCheckins(rows, sourceName) {
         })
         .filter(Boolean)
         .sort((a, b) => a.date - b.date);
+}
+
+function addDistanceStats(checkins) {
+    let totalMiles = 0;
+    return checkins.map((checkin, index) => {
+        if (index > 0) {
+            totalMiles += distanceMiles(checkins[index - 1].latLng, checkin.latLng);
+        }
+
+        return {
+            ...checkin,
+            totalMiles
+        };
+    });
 }
 
 function dedupeCheckins(checkins) {
@@ -145,6 +185,18 @@ function renderPanel(checkins) {
     const timeline = document.getElementById('timeline');
     timeline.max = checkins.length - 1;
     timeline.value = 0;
+}
+
+function updateTimelineTooltip(index) {
+    const tooltip = document.getElementById('timeline-tooltip');
+    const timeline = document.getElementById('timeline');
+    const checkins = routeState.checkins;
+    const maxIndex = checkins.length - 1;
+    const safeIndex = Math.max(0, Math.min(index, maxIndex));
+    const progress = maxIndex ? safeIndex / maxIndex : 0;
+
+    tooltip.textContent = formatTooltipDate(checkins[safeIndex].date);
+    tooltip.style.left = `${progress * 100}%`;
 }
 
 function markerIcon(className) {
@@ -202,7 +254,8 @@ function renderStep(index, shouldPan = true) {
     routeState.planeMarker.bindPopup(`Current: ${current.place}`);
 
     document.getElementById('timeline').value = safeIndex;
-    document.getElementById('summary').textContent = `Showing ${safeIndex + 1} of ${checkins.length} check-ins in date order.`;
+    updateTimelineTooltip(safeIndex);
+    document.getElementById('summary').textContent = `Showing ${safeIndex + 1} of ${checkins.length} check-ins. ${formatMiles(current.totalMiles)} total miles.`;
     document.getElementById('current-stop').innerHTML = `<strong>${current.place}</strong><span>${current.location} · ${current.date.toLocaleString()}</span>`;
 
     if (shouldPan) {
@@ -321,8 +374,8 @@ async function loadTravels() {
             };
         }));
 
-        const checkins = dedupeCheckins(csvTexts.flatMap(source => buildCheckins(parseCsv(source.csv), source.sourceName)))
-            .sort((a, b) => a.date - b.date);
+        const checkins = addDistanceStats(dedupeCheckins(csvTexts.flatMap(source => buildCheckins(parseCsv(source.csv), source.sourceName)))
+            .sort((a, b) => a.date - b.date));
         if (!checkins.length) {
             throw new Error('No check-ins with GPS coordinates found');
         }

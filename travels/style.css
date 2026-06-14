@@ -54,8 +54,39 @@ body {
     width: 100%;
 }
 
+.timeline-track {
+    min-width: 0;
+    padding-top: 24px;
+    position: relative;
+}
+
 #timeline {
     width: 100%;
+}
+
+#timeline-tooltip {
+    background: #202124;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    left: 0;
+    padding: 4px 7px;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+#timeline-tooltip::after {
+    border: 5px solid transparent;
+    border-top-color: #202124;
+    content: '';
+    left: 50%;
+    position: absolute;
+    top: 100%;
+    transform: translateX(-50%);
 }
 
 .speed-control {
