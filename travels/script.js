@@ -1,11 +1,7 @@
 const checkinSources = [
     {
-        name: 'historical',
+        name: 'foursquare-feed',
         url: 'historical-checkins.csv'
-    },
-    {
-        name: 'live',
-        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbtuzLo29gaOYk7AYUM-DTnStDT-hpmsWz_0yHZeDVoHVzTaMeBpixNiZrxRNKVM_83C0pJ2eqPHqK/pub?gid=0&single=true&output=csv'
     }
 ];
 const routeState = {
@@ -66,6 +62,11 @@ function parseCsv(csvText) {
 }
 
 function parseCheckinDate(value) {
+    const isoParsed = new Date(value);
+    if (!Number.isNaN(isoParsed.getTime())) {
+        return isoParsed;
+    }
+
     const normalized = value
         .replace(' at ', ' ')
         .replace(/^([A-Z][a-z]{2})-/, '$1 ')
