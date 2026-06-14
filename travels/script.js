@@ -17,7 +17,11 @@ const routeState = {
     playTimer: null,
     routeLine: null
 };
-const speedSteps = [1000, 700, 500, 350, 250, 180, 130, 95, 70, 50];
+const defaultMapView = {
+    center: [15.8700, 100.9925],
+    zoom: 6
+};
+const speedSteps = [1000, 700, 500, 350, 250, 180, 130, 100, 70, 50];
 
 function parseCsv(csvText) {
     const rows = [];
@@ -298,7 +302,7 @@ function renderMap(checkins) {
         icon: currentDotIcon()
     }).addTo(map);
 
-    map.setView(checkins[0].latLng, 11);
+    map.setView(defaultMapView.center, defaultMapView.zoom);
     setupTimelineControls();
     renderStep(0, false);
 }
