@@ -1,40 +1,141 @@
-/* Basic styles for the typing score game */
-
 body {
     margin: 0;
-    padding: 0;
+    padding: 20px;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f5f7fa;
+    color: #202124;
 }
 
 .game-container {
-    width: 80%;
-    max-width: 800px;
-    margin: 50px auto;
+    width: min(92vw, 620px);
+    margin: 40px auto;
     padding: 20px;
     background-color: white;
-    border: 2px solid #ddd;
-    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#editor {
-    width: 100%;
-    height: 150px;
-    border: none;
-    outline: none;
-    padding: 10px;
-    background-color: #fff;
-    font-size: 18px;
-    line-height: 1.5;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-    border-radius: 8px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
-#score {
-    margin-top: 20px;
+.top-bar h2 {
+    margin: 0;
+    color: #2d2d56;
     font-size: 24px;
-    color: #333;
+}
+
+.back-link {
+    color: #595c8a;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+button {
+    border: 0;
+    border-radius: 6px;
+    background: #2d2d56;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 9px 12px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 24px 0;
+}
+
+.stats div {
+    background: #f5f7fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+}
+
+.label {
+    color: #5f6368;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.stats strong {
+    color: #2d2d56;
+    font-size: 28px;
+}
+
+.word-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+}
+
+#target-word {
+    color: #202124;
+    font-size: 46px;
+    font-weight: 800;
+    letter-spacing: 0;
+}
+
+#answer {
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #d7d9e2;
+    border-radius: 8px;
+    font-size: 24px;
+    margin-top: 18px;
+    outline: none;
+    padding: 14px;
+    text-align: center;
+}
+
+#answer:focus {
+    border-color: #595c8a;
+}
+
+#answer.correct {
+    border-color: #1a7f37;
+}
+
+#answer.wrong {
+    border-color: #cf222e;
+}
+
+#message {
+    color: #5f6368;
+    min-height: 24px;
+    margin-top: 14px;
+    text-align: center;
+}
+
+@media (max-width: 520px) {
+    body {
+        padding: 12px;
+    }
+
+    .game-container {
+        margin: 16px auto;
+        padding: 16px;
+    }
+
+    .top-bar {
+        align-items: stretch;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #target-word {
+        font-size: 36px;
+    }
 }

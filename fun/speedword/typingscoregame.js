@@ -1,60 +1,120 @@
-// JavaScript for the typing score game
+const words = [
+    'island', 'banana', 'rocket', 'puzzle', 'silver', 'button', 'dragon',
+    'window', 'yellow', 'typing', 'summer', 'family', 'garden', 'coffee',
+    'school', 'planet', 'pirate', 'orange', 'jungle', 'castle', 'beacon',
+    'marble', 'thunder', 'cookie', 'travel', 'camera', 'forest', 'bubble'
+];
 
-const editor = document.getElementById('editor');
+const answer = document.getElementById('answer');
+const message = document.getElementById('message');
+const restart = document.getElementById('restart');
 const scoreDisplay = document.getElementById('score');
+const streakDisplay = document.getElementById('streak');
+const targetWordDisplay = document.getElementById('target-word');
+const timeDisplay = document.getElementById('time');
 
-let score = 0;
 let currentWord = '';
-let startTime = 0;
+let gameStarted = false;
+let lastWord = '';
+let score = 0;
+let streak = 0;
+let timer = null;
+let timeLeft = 30;
 
-// Function to calculate score based on word length and typing speed
-function calculateScore(word, timeTaken) {
-    const wordLength = word.length;
-    const timeInSeconds = timeTaken / 1000;
-
-    // Updated scoring formula: (word length ^ 2 * 100) / time in seconds
-    return Math.round((Math.pow(wordLength, 2) * 100) / timeInSeconds);
+function chooseWord() {
+    let nextWord = words[Math.floor(Math.random() * words.length)];
+    while (nextWord === lastWord) {
+        nextWord = words[Math.floor(Math.random() * words.length)];
+    }
+    lastWord = nextWord;
+    currentWord = nextWord;
+    targetWordDisplay.textContent = currentWord;
 }
 
-// Listen for input in the contenteditable div
-editor.addEventListener('input', function(event) {
-    const text = editor.innerText; // Get the current text
-    const lastChar = text.slice(-1);
+function render() {
+    scoreDisplay.textContent = score;
+    streakDisplay.textContent = streak;
+    timeDisplay.textContent = timeLeft;
+}
 
-    if (startTime === 0) {
-        startTime = Date.now(); // Start the timer when typing begins
+function startGame() {
+    if (gameStarted) {
+        return;
     }
 
-    if (lastChar === ' ' || lastChar === '\n') {
-        // User finished typing a word (space or enter pressed)
-        const endTime = Date.now();
-        const timeTaken = endTime - startTime;
+    gameStarted = true;
+    message.textContent = 'Press space or enter after each word.';
+    timer = window.setInterval(() => {
+        timeLeft -= 1;
+        render();
 
-        // Remove trailing space or newline
-        currentWord = text.trim();
-        if (currentWord.length > 0) {
-            // Calculate the score using the updated formula
-            const wordScore = calculateScore(currentWord, timeTaken);
-            score += wordScore; // Update the total score
-            scoreDisplay.textContent = `Score: ${score}`;
+        if (timeLeft <= 0) {
+            endGame();
         }
+    }, 1000);
+}
 
-        // Reset for the next word
-        editor.innerHTML = ''; // Clear the editor for the next word
-        currentWord = '';
-        startTime = 0; // Reset the timer
+function endGame() {
+    window.clearInterval(timer);
+    timer = null;
+    gameStarted = false;
+    answer.disabled = true;
+    answer.value = '';
+    message.textContent = `Time! Final score: ${score}.`;
+}
+
+function resetGame() {
+    window.clearInterval(timer);
+    timer = null;
+    gameStarted = false;
+    score = 0;
+    streak = 0;
+    timeLeft = 30;
+    answer.disabled = false;
+    answer.value = '';
+    answer.className = '';
+    message.textContent = 'Start typing to begin.';
+    chooseWord();
+    render();
+    answer.focus();
+}
+
+function submitWord() {
+    const typedWord = answer.value.trim().toLowerCase();
+
+    if (!typedWord) {
+        answer.value = '';
+        return;
     }
+
+    if (typedWord === currentWord) {
+        streak += 1;
+        score += currentWord.length * 10 + streak * 5;
+        message.textContent = `Nice: +${currentWord.length * 10 + streak * 5}`;
+        answer.className = 'correct';
+        chooseWord();
+    } else {
+        streak = 0;
+        message.textContent = `Missed: ${currentWord}`;
+        answer.className = 'wrong';
+    }
+
+    answer.value = '';
+    render();
+}
+
+answer.addEventListener('keydown', (event) => {
+    if (event.key !== ' ' && event.key !== 'Enter') {
+        return;
+    }
+
+    event.preventDefault();
+    startGame();
+    submitWord();
 });
 
-// Function to move the caret (cursor) to the end of the contenteditable div
-function placeCaretAtEnd(el) {
-    el.focus();
-    if (typeof window.getSelection !== 'undefined' && typeof document.createRange !== 'undefined') {
-        const range = document.createRange();
-        range.selectNodeContents(el);
-        range.collapse(false);
-        const sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-    }
-}
+answer.addEventListener('input', startGame);
+restart.addEventListener('click', resetGame);
+document.addEventListener('click', () => answer.focus());
+
+resetGame();

@@ -17,8 +17,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
             background-color: #f4f4f9;
         }
 
@@ -28,8 +30,17 @@
             background-color: #fff;
             padding: 20px;
             border: 2px solid #ddd;
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: min(92vw, 420px);
+        }
+
+        .back-link {
+            color: #595c8a;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-decoration: none;
         }
 
         /* Title styling */
@@ -43,12 +54,17 @@
         #click-btn {
             background-color: #4CAF50;
             color: white;
-            font-size: 20px;
-            padding: 10px 20px;
+            font-size: 24px;
+            font-weight: bold;
+            min-height: 90px;
+            width: 100%;
+            padding: 16px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            touch-action: manipulation;
+            user-select: none;
         }
 
         #click-btn:hover {
@@ -56,78 +72,150 @@
         }
 
         /* Score display styling */
-        #score {
-            font-size: 22px;
-            margin-top: 20px;
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .stat {
+            background: #f5f7fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 8px;
+        }
+
+        .label {
+            color: #666;
+            display: block;
+            font-size: 12px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .value {
             color: #333;
+            font-size: 24px;
+            font-weight: bold;
         }
 
         /* Timer display styling */
-        #timer {
+        #status {
             font-size: 18px;
-            margin-top: 10px;
+            min-height: 24px;
+            margin-top: 14px;
             color: #666;
         }
 
-        /* Disabled button state */
-        #click-btn:disabled {
-            background-color: #888;
-            cursor: not-allowed;
+        #click-btn.running {
+            background-color: #2f855a;
+        }
+
+        #click-btn.finished {
+            background-color: #2d2d56;
         }
     </style>
 </head>
 <body>
 
 <div class="game-container">
+    <a href="./" class="back-link">← Fun</a>
     <h1>Clicker Game</h1>
     <p>Click the button as fast as you can in <span id="time-limit">10</span> seconds!</p>
-    <button id="click-btn">Click me!</button>
-    <div id="score">Score: 0</div>
-    <div id="timer">Time left: 10s</div>
+    <button id="click-btn" type="button">Start clicking!</button>
+    <div class="stats">
+        <div class="stat">
+            <span class="label">Score</span>
+            <span id="score" class="value">0</span>
+        </div>
+        <div class="stat">
+            <span class="label">Time</span>
+            <span id="timer" class="value">10.0</span>
+        </div>
+        <div class="stat">
+            <span class="label">Best</span>
+            <span id="best" class="value">0</span>
+        </div>
+    </div>
+    <div id="status">First click starts and counts.</div>
 </div>
 
 <!-- JavaScript directly in the HTML -->
 <script>
     let score = 0;
-    let timeLeft = 10;
+    let bestScore = Number(localStorage.getItem('clickerBestScore') || 0);
+    let endTime = 0;
     let gameActive = false;
+    let countdown = null;
+    const gameLength = 10000;
 
     const scoreDisplay = document.getElementById('score');
     const timerDisplay = document.getElementById('timer');
+    const bestDisplay = document.getElementById('best');
     const clickButton = document.getElementById('click-btn');
+    const statusDisplay = document.getElementById('status');
+
+    bestDisplay.textContent = bestScore;
 
     clickButton.addEventListener('click', () => {
         if (!gameActive) {
             startGame();
-        } else {
-            score++;
-            scoreDisplay.innerHTML = `Score: ${score}`;
         }
+
+        addClick();
     });
 
     function startGame() {
         gameActive = true;
         score = 0;
-        timeLeft = 10;
-        scoreDisplay.innerHTML = `Score: ${score}`;
-        timerDisplay.innerHTML = `Time left: ${timeLeft}s`;
-        clickButton.disabled = false;
+        endTime = Date.now() + gameLength;
+        scoreDisplay.textContent = score;
+        clickButton.textContent = 'Click!';
+        clickButton.className = 'running';
+        statusDisplay.textContent = 'Go!';
+        updateTimer();
+        countdown = setInterval(updateTimer, 100);
+    }
 
-        const countdown = setInterval(() => {
-            timeLeft--;
-            timerDisplay.innerHTML = `Time left: ${timeLeft}s`;
+    function addClick() {
+        score++;
+        scoreDisplay.textContent = score;
+        clickButton.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+            clickButton.style.transform = '';
+        }, 55);
+    }
 
-            if (timeLeft <= 0) {
-                clearInterval(countdown);
-                endGame();
-            }
-        }, 1000);
+    function updateTimer() {
+        const remaining = Math.max(0, endTime - Date.now());
+        timerDisplay.textContent = (remaining / 1000).toFixed(1);
+
+        if (remaining <= 0) {
+            endGame();
+        }
     }
 
     function endGame() {
+        if (!gameActive) {
+            return;
+        }
+
         gameActive = false;
-        clickButton.disabled = true;
-        timerDisplay.innerHTML = 'Game over! Time is up.';
+        clearInterval(countdown);
+        countdown = null;
+
+        if (score > bestScore) {
+            bestScore = score;
+            localStorage.setItem('clickerBestScore', bestScore);
+            bestDisplay.textContent = bestScore;
+            statusDisplay.textContent = `New best: ${score} clicks!`;
+        } else {
+            statusDisplay.textContent = `${score} clicks. ${(score / 10).toFixed(1)} clicks/sec.`;
+        }
+
+        clickButton.textContent = 'Play again';
+        clickButton.className = 'finished';
     }
 </script>
 

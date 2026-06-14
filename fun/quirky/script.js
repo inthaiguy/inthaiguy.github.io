@@ -1,5 +1,7 @@
 const editor = document.getElementById('editor');
+const quirkStatus = document.getElementById('quirk-status');
 let effectsCount = {}; // Keep track of how many times each effect has happened
+let latestEffect = 'ready';
 
 // Check if effect limit is reached (3 times per character)
 function canApplyEffect(char) {
@@ -22,67 +24,116 @@ editor.addEventListener('input', function(event) {
         let span = document.createElement('span');  // Create a span for each character
         span.textContent = char;  // Set the text for the span
 
+        const lowerChar = char.toLowerCase();
+
         // Apply quirky styles
-        if (char === 'a' && canApplyEffect('a')) {
+        if (lowerChar === 'a' && canApplyEffect('a')) {
             span.classList.add('large-a');
-        } else if (char === 'b' && canApplyEffect('b')) {
+            latestEffect = 'big a';
+        } else if (lowerChar === 'b' && canApplyEffect('b')) {
             span.classList.add('small-b');
-        } else if (char === 'c' && canApplyEffect('c')) {
+            latestEffect = 'tiny b';
+        } else if (lowerChar === 'c' && canApplyEffect('c')) {
             span.classList.add('spin-c');
-        } else if (char === 'd' && canApplyEffect('d')) {
+            latestEffect = 'spinning c';
+        } else if (lowerChar === 'd' && canApplyEffect('d')) {
             span.classList.add('large-d');
-        } else if (char === 'e' && canApplyEffect('e')) {
+            latestEffect = 'large d';
+        } else if (lowerChar === 'e' && canApplyEffect('e')) {
             span.classList.add('red-e');
-        } else if (char === 'g' && canApplyEffect('g')) {
+            latestEffect = 'red e';
+        } else if (lowerChar === 'f' && canApplyEffect('f')) {
+            span.classList.add('float-f');
+            latestEffect = 'floating f';
+        } else if (lowerChar === 'g' && canApplyEffect('g')) {
             span.classList.add('fade-g');
-        } else if (char === 'h' && canApplyEffect('h')) {
+            latestEffect = 'fading g';
+        } else if (lowerChar === 'h' && canApplyEffect('h')) {
             span.classList.add('blue-h');
-        } else if (char === 'j' && canApplyEffect('j')) {
+            latestEffect = 'blue h';
+        } else if (lowerChar === 'i' && canApplyEffect('i')) {
+            span.classList.add('tall-i');
+            latestEffect = 'tall i';
+        } else if (lowerChar === 'j' && canApplyEffect('j')) {
             span.classList.add('tilt-j');
-        } else if (char === 'k' && canApplyEffect('k')) {
+            latestEffect = 'tilted j';
+        } else if (lowerChar === 'k' && canApplyEffect('k')) {
             span.classList.add('wobble-k');
-        } else if (char === 'l' && canApplyEffect('l')) {
+            latestEffect = 'wobbling k';
+        } else if (lowerChar === 'l' && canApplyEffect('l')) {
             span.classList.add('spin-l');
-        } else if (char === 'm' && canApplyEffect('m')) {
+            latestEffect = 'spinning l';
+        } else if (lowerChar === 'm' && canApplyEffect('m')) {
             span.classList.add('flip-m');
             setTimeout(() => {
                 span.style.transform = 'rotate(360deg)';
             }, 100);  // Flip after 100ms
-        } else if (char === 'n' && canApplyEffect('n')) {
+            latestEffect = 'flipping m';
+        } else if (lowerChar === 'n' && canApplyEffect('n')) {
             span.classList.add('large-n');
-        } else if (char === 'o' && canApplyEffect('o')) {
+            latestEffect = 'large n';
+        } else if (lowerChar === 'o' && canApplyEffect('o')) {
             span.classList.add('spin-o');
             setTimeout(() => { span.classList.remove('spin-o'); }, 100);  // Spin for 100ms
-        } else if (char === 'p' && canApplyEffect('p')) {
+            latestEffect = 'spinning o';
+        } else if (lowerChar === 'p' && canApplyEffect('p')) {
             span.classList.add('rotate-p');
             setTimeout(() => {
                 span.style.transform = 'rotateX(0deg)';
             }, 200);  // Rotate back after 200ms
-        } else if (char === 'q' && canApplyEffect('q')) {
+            latestEffect = 'rotating p';
+        } else if (lowerChar === 'q' && canApplyEffect('q')) {
             span.textContent = 'Q'; // Print as uppercase Q
-        } else if (char === 'r' && canApplyEffect('r')) {
+            span.classList.add('upper-q');
+            latestEffect = 'uppercase q';
+        } else if (lowerChar === 'r' && canApplyEffect('r')) {
             span.classList.add('green-r');
-        } else if (char === 's' && canApplyEffect('s')) {
+            latestEffect = 'green r';
+        } else if (lowerChar === 's' && canApplyEffect('s')) {
             span.classList.add('rotate-s');
-        } else if (char === 't' && canApplyEffect('t')) {
+            latestEffect = 'rotated s';
+        } else if (lowerChar === 't' && canApplyEffect('t')) {
             span.classList.add('blue-t');
-        } else if (char === 'u' && canApplyEffect('u')) {
+            latestEffect = 'blue t';
+        } else if (lowerChar === 'u' && canApplyEffect('u')) {
             span.classList.add('mirror-u');
-        } else if (char === 'v' && canApplyEffect('v')) {
+            latestEffect = 'mirrored u';
+        } else if (lowerChar === 'v' && canApplyEffect('v')) {
             span.classList.add('grow-v');
-        } else if (char === 'w' && canApplyEffect('w')) {
+            latestEffect = 'growing v';
+        } else if (lowerChar === 'w' && canApplyEffect('w')) {
             span.classList.add('rotate-w');
-        } else if (char === 'x' && canApplyEffect('x')) {
+            latestEffect = 'rotated w';
+        } else if (lowerChar === 'x' && canApplyEffect('x')) {
             span.classList.add('large-grey-x');
-        } else if (char === 'y' && canApplyEffect('y')) {
+            latestEffect = 'large x';
+        } else if (lowerChar === 'y' && canApplyEffect('y')) {
             span.classList.add('green-y');
-        } else if (char === 'z' && canApplyEffect('z')) {
+            latestEffect = 'green y';
+        } else if (lowerChar === 'z' && canApplyEffect('z')) {
             span.classList.add('small-z');
+            latestEffect = 'small z';
+        } else if (/[0-9]/.test(char) && canApplyEffect('number')) {
+            span.classList.add('number-pop');
+            latestEffect = 'number pop';
+        } else if (char === '!' && canApplyEffect('bang')) {
+            span.classList.add('bang');
+            latestEffect = 'bang';
+        } else if (char === '?' && canApplyEffect('question')) {
+            span.classList.add('question');
+            latestEffect = 'question mark';
+        } else if (char === '.' && canApplyEffect('dot')) {
+            span.classList.add('dot');
+            latestEffect = 'dot';
+        } else if (char === ',' && canApplyEffect('comma')) {
+            span.classList.add('comma');
+            latestEffect = 'comma';
         }
 
         editor.appendChild(span);  // Add the span back to the editor
     }
 
+    quirkStatus.textContent = `Latest quirk: ${latestEffect}`;
    
     placeCaretAtEnd(editor);  // Move the cursor to the end
 });
