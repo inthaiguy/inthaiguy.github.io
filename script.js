@@ -1,33 +1,75 @@
-// URL of the Google Sheet's published HTML page
-const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbtuzLo29gaOYk7AYUM-DTnStDT-hpmsWz_0yHZeDVoHVzTaMeBpixNiZrxRNKVM_83C0pJ2eqPHqK/pubhtml?gid=0&single=true';
+// URL of the Google Sheet's published CSV.
+const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbtuzLo29gaOYk7AYUM-DTnStDT-hpmsWz_0yHZeDVoHVzTaMeBpixNiZrxRNKVM_83C0pJ2eqPHqK/pub?gid=0&single=true&output=csv';
 
-// Function to fetch the Google Sheet HTML content
+function parseCsv(csvText) {
+    const rows = [];
+    let currentCell = '';
+    let currentRow = [];
+    let insideQuotes = false;
+
+    for (let i = 0; i < csvText.length; i++) {
+        const char = csvText[i];
+        const nextChar = csvText[i + 1];
+
+        if (char === '"' && nextChar === '"') {
+            currentCell += '"';
+            i++;
+        } else if (char === '"') {
+            insideQuotes = !insideQuotes;
+        } else if (char === ',' && !insideQuotes) {
+            currentRow.push(currentCell.trim());
+            currentCell = '';
+        } else if ((char === '\n' || char === '\r') && !insideQuotes) {
+            if (char === '\r' && nextChar === '\n') {
+                i++;
+            }
+
+            currentRow.push(currentCell.trim());
+            if (currentRow.some(Boolean)) {
+                rows.push(currentRow);
+            }
+            currentCell = '';
+            currentRow = [];
+        } else {
+            currentCell += char;
+        }
+    }
+
+    currentRow.push(currentCell.trim());
+    if (currentRow.some(Boolean)) {
+        rows.push(currentRow);
+    }
+
+    return rows;
+}
+
 async function fetchGoogleSheetData() {
+    const dynamicText = document.getElementById('dynamic-text');
+
     try {
         const response = await fetch(googleSheetUrl);
-        const html = await response.text();
+        if (!response.ok) {
+            throw new Error(`Google Sheet request failed: ${response.status}`);
+        }
 
-        // Create a new DOMParser to parse the HTML content
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
+        const csv = await response.text();
+        const rows = parseCsv(csv).slice(1);
+        const lastRow = rows.reverse().find(row => row[0] && row[1] && row[2]);
 
-        // Select the last row in the table (assuming it's the last event)
-        const tableRows = doc.querySelectorAll('table tbody tr');
-        const lastRow = tableRows[tableRows.length - 1];
+        if (!lastRow) {
+            throw new Error('No check-in rows found');
+        }
 
-        // Extract the date, location, and place from the last row's cells
-        const date = lastRow.cells[1].innerText.trim();       // Assuming Date is in the first cell
-        const location = lastRow.cells[2].innerText.trim();   // Assuming Location is in the second cell
-        const placeName = lastRow.cells[3].innerText.trim();  // Assuming Place Name is in the third cell
+        const date = lastRow[0];
+        const location = lastRow[1];
+        const placeName = lastRow[2];
 
-        // Format the text and display it in the h2 tag
-        const dynamicText = document.getElementById('dynamic-text');
         dynamicText.textContent = `On ${date} in ${location} at ${placeName}`;
-        
-        // Now that the content is ready, display the h2 tag
         dynamicText.style.display = 'block';
     } catch (error) {
         console.error('Error fetching Google Sheet data:', error);
+        dynamicText.textContent = 'Location unavailable';
+        dynamicText.style.display = 'block';
     }
 }
 

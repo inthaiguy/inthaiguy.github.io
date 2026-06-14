@@ -1,0 +1,119 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    color: #202124;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.meta-panel {
+    background: #fff;
+    border-top: 1px solid #d9dee8;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    z-index: 2;
+}
+
+#summary {
+    color: #5f6368;
+    font-size: 13px;
+    margin: 8px 0 0;
+}
+
+#route-meta {
+    color: #5f6368;
+    font-size: 12px;
+    margin: 4px 0 0;
+}
+
+.timeline-controls {
+    align-items: center;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 90px minmax(160px, 1fr) minmax(260px, 420px);
+}
+
+#play-pause {
+    background: #2d2d56;
+    border: 0;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 9px 14px;
+    width: 100%;
+}
+
+#timeline {
+    width: 100%;
+}
+
+#current-stop {
+    color: #202124;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+#current-stop span {
+    color: #5f6368;
+    display: block;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+#map {
+    flex: 1;
+    min-height: 0;
+}
+
+.flight-line {
+    animation: flightDash 1.2s linear infinite;
+}
+
+.current-dot-marker {
+    background: #111827;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+}
+
+.stop-marker {
+    background: #2d2d56;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.latest-marker {
+    background: #dc2626;
+}
+
+.current-marker {
+    background: #f97316;
+}
+
+@keyframes flightDash {
+    to {
+        stroke-dashoffset: -24;
+    }
+}
+
+@media (max-width: 760px) {
+    .timeline-controls {
+        grid-template-columns: 1fr;
+    }
+
+    #map {
+        min-height: 62vh;
+    }
+}

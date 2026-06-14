@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Travels</title>
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="page">
+        <section id="map" aria-label="Map of check-ins"></section>
+        <section class="meta-panel">
+            <div class="timeline-controls">
+                <button id="play-pause" type="button">Play</button>
+                <input id="timeline" type="range" min="0" max="0" value="0">
+                <div id="current-stop">Loading route...</div>
+            </div>
+            <p id="summary">Loading check-ins...</p>
+            <p id="route-meta">
+                <span id="stop-count">--</span> stops ·
+                <span id="first-date">--</span> to
+                <span id="latest-date">--</span>
+            </p>
+        </section>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js?v=2"></script>
+</body>
+</html>
