@@ -1,4 +1,13 @@
-const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbtuzLo29gaOYk7AYUM-DTnStDT-hpmsWz_0yHZeDVoHVzTaMeBpixNiZrxRNKVM_83C0pJ2eqPHqK/pub?gid=0&single=true&output=csv';
+const checkinSources = [
+    {
+        name: 'historical',
+        url: 'historical-checkins.csv'
+    },
+    {
+        name: 'live',
+        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRbtuzLo29gaOYk7AYUM-DTnStDT-hpmsWz_0yHZeDVoHVzTaMeBpixNiZrxRNKVM_83C0pJ2eqPHqK/pub?gid=0&single=true&output=csv'
+    }
+];
 const routeState = {
     checkins: [],
     currentIndex: 0,
@@ -8,6 +17,7 @@ const routeState = {
     playTimer: null,
     routeLine: null
 };
+const speedSteps = [1000, 700, 500, 350, 250, 180, 130, 95, 70, 50];
 
 function parseCsv(csvText) {
     const rows = [];
@@ -80,7 +90,7 @@ function formatDate(date) {
     });
 }
 
-function buildCheckins(rows) {
+function buildCheckins(rows, sourceName) {
     return rows.slice(1)
         .map(row => {
             const date = parseCheckinDate(row[0]);
@@ -94,11 +104,30 @@ function buildCheckins(rows) {
                 date,
                 location: row[1],
                 place: row[2],
-                latLng: gps
+                latLng: gps,
+                source: row[4] || sourceName
             };
         })
         .filter(Boolean)
         .sort((a, b) => a.date - b.date);
+}
+
+function dedupeCheckins(checkins) {
+    const seen = new Set();
+    return checkins.filter(checkin => {
+        const key = [
+            checkin.date.toISOString(),
+            checkin.place,
+            checkin.latLng.map(value => value.toFixed(6)).join(',')
+        ].join('|');
+
+        if (seen.has(key)) {
+            return false;
+        }
+
+        seen.add(key);
+        return true;
+    });
 }
 
 function renderPanel(checkins) {
@@ -183,6 +212,17 @@ function stopPlayback() {
     document.getElementById('play-pause').textContent = 'Play';
 }
 
+function playbackDelay() {
+    const speed = Number(document.getElementById('speed').value);
+    return speedSteps[Math.max(0, Math.min(speed - 1, speedSteps.length - 1))];
+}
+
+function updateSpeedLabel() {
+    const speed = Number(document.getElementById('speed').value);
+    const multiplier = speedSteps[3] / playbackDelay();
+    document.getElementById('speed-label').textContent = `${multiplier.toFixed(1).replace('.0', '')}x`;
+}
+
 function startPlayback() {
     const playButton = document.getElementById('play-pause');
     playButton.textContent = 'Pause';
@@ -198,12 +238,13 @@ function startPlayback() {
         }
 
         renderStep(routeState.currentIndex + 1);
-    }, 350);
+    }, playbackDelay());
 }
 
 function setupTimelineControls() {
     const playButton = document.getElementById('play-pause');
     const timeline = document.getElementById('timeline');
+    const speed = document.getElementById('speed');
 
     playButton.addEventListener('click', () => {
         if (routeState.playTimer) {
@@ -217,6 +258,18 @@ function setupTimelineControls() {
         stopPlayback();
         renderStep(Number(event.target.value));
     });
+
+    speed.addEventListener('input', () => {
+        const wasPlaying = Boolean(routeState.playTimer);
+        updateSpeedLabel();
+
+        if (wasPlaying) {
+            stopPlayback();
+            startPlayback();
+        }
+    });
+
+    updateSpeedLabel();
 }
 
 function renderMap(checkins) {
@@ -252,13 +305,20 @@ function renderMap(checkins) {
 
 async function loadTravels() {
     try {
-        const response = await fetch(googleSheetUrl);
-        if (!response.ok) {
-            throw new Error(`CSV request failed: ${response.status}`);
-        }
+        const csvTexts = await Promise.all(checkinSources.map(async source => {
+            const response = await fetch(source.url);
+            if (!response.ok) {
+                throw new Error(`${source.name} CSV request failed: ${response.status}`);
+            }
 
-        const csv = await response.text();
-        const checkins = buildCheckins(parseCsv(csv));
+            return {
+                csv: await response.text(),
+                sourceName: source.name
+            };
+        }));
+
+        const checkins = dedupeCheckins(csvTexts.flatMap(source => buildCheckins(parseCsv(source.csv), source.sourceName)))
+            .sort((a, b) => a.date - b.date);
         if (!checkins.length) {
             throw new Error('No check-ins with GPS coordinates found');
         }

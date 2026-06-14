@@ -20,6 +20,11 @@
             <div class="timeline-controls">
                 <button id="play-pause" type="button">Play</button>
                 <input id="timeline" type="range" min="0" max="0" value="0">
+                <label class="speed-control">
+                    Speed
+                    <input id="speed" type="range" min="1" max="10" value="4">
+                    <span id="speed-label">1x</span>
+                </label>
                 <div id="current-stop">Loading route...</div>
             </div>
             <p id="summary">Loading check-ins...</p>
@@ -32,6 +37,6 @@
     </main>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>

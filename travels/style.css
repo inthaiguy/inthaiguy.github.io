@@ -40,7 +40,7 @@ body {
     align-items: center;
     display: grid;
     gap: 12px;
-    grid-template-columns: 90px minmax(160px, 1fr) minmax(260px, 420px);
+    grid-template-columns: 90px minmax(160px, 1fr) minmax(150px, 220px) minmax(240px, 380px);
 }
 
 #play-pause {
@@ -56,6 +56,25 @@ body {
 
 #timeline {
     width: 100%;
+}
+
+.speed-control {
+    align-items: center;
+    color: #5f6368;
+    display: grid;
+    font-size: 12px;
+    gap: 8px;
+    grid-template-columns: auto minmax(80px, 1fr) 32px;
+}
+
+#speed {
+    width: 100%;
+}
+
+#speed-label {
+    color: #202124;
+    font-weight: 700;
+    text-align: right;
 }
 
 #current-stop {
