@@ -189366,10 +189366,20 @@ window.MOTO_TRIPS = {
       "endDate": "2017-11-18",
       "dateLabel": "No-track photos",
       "distanceKm": 0,
-      "pointCount": 45,
+      "pointCount": 46,
       "kind": "Photo stops",
       "summary": "Standalone motorcycle photo stops without GPX tracks. GPS-tagged photos use EXIF coordinates; a small number are inferred from same-day neighboring GPS photos or user-confirmed locations.",
       "photos": [
+        {
+          "file": "photos_web/no-track-046-dsc-0451.jpg",
+          "orig": "DSC_0451.JPG",
+          "lon": 103.3007,
+          "lat": 16.1848,
+          "dt": "2009-03-06 15:00",
+          "title": "Maha Sarakham road sign to Chiang Yuen",
+          "region": "Maha Sarakham, Thailand",
+          "off": false
+        },
         {
           "file": "photos_web/no-track-037-dsc-0501.jpg",
           "orig": "DSC_0501.JPG",
@@ -189393,11 +189403,11 @@ window.MOTO_TRIPS = {
         {
           "file": "photos_web/no-track-039-p1020715.jpg",
           "orig": "P1020715.JPG",
-          "lon": 102.830408,
-          "lat": 16.428812,
+          "lon": 99.8325,
+          "lat": 19.9086,
           "dt": "2010-03-07 11:15",
-          "title": "Pullman Khon Kaen parking lot",
-          "region": "Khon Kaen, Thailand",
+          "title": "Chiang Rai downtown clock tower area",
+          "region": "Chiang Rai, Thailand",
           "off": false
         },
         {
