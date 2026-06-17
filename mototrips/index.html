@@ -38,10 +38,15 @@
  #card{position:absolute;left:22px;bottom:92px;z-index:30;width:330px;max-width:82vw;background:rgba(14,14,18,.86);
    border:1px solid rgba(255,255,255,.13);border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.6);
    opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s;pointer-events:none}
- #card.show{opacity:1;transform:translateY(0)}
+ #card.show{opacity:1;transform:translateY(0);pointer-events:auto}
  #card img{width:100%;display:block;background:#000;max-height:52vh;object-fit:cover}
  #card .meta{padding:9px 13px} #card .t{font-size:15px;font-weight:700}
  #card .r{font-size:12px;opacity:.74;margin-top:2px} #card .d{font-size:11px;opacity:.5;margin-top:3px}
+ #cardNav{display:none;align-items:center;gap:8px;margin-top:8px}
+ #cardNav.show{display:flex}
+ #cardNav button{cursor:pointer;border:none;border-radius:50%;width:28px;height:28px;display:grid;place-items:center;background:rgba(255,255,255,.13);color:#fff;font-size:16px}
+ #cardNav button:hover{background:rgba(255,255,255,.22)}
+ #cardCount{font-size:11px;opacity:.68;font-variant-numeric:tabular-nums}
  .offtag{display:inline-block;font-size:10px;font-weight:700;color:#ffd27f;background:rgba(255,180,60,.18);padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:middle}
  #bar{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:35;display:flex;align-items:center;gap:9px;background:rgba(14,14,18,.82);border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:7px 13px;backdrop-filter:blur(8px)}
  #bar button{cursor:pointer;background:none;border:none;color:#fff;font-size:17px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center}
@@ -75,7 +80,7 @@
 </aside>
 <div id="top"><div class="trip" id="topTrip"></div></div>
 <div id="hint">drag to look · scroll to zoom<br>select a trip or click a photo dot</div>
-<div id="card"><img id="cardImg"/><div class="meta"><div class="t" id="cardTitle"></div><div class="r" id="cardRegion"></div><div class="d" id="cardDate"></div></div></div>
+<div id="card"><img id="cardImg"/><div class="meta"><div class="t" id="cardTitle"></div><div class="r" id="cardRegion"></div><div class="d" id="cardDate"></div><div id="cardNav"><button id="cardPrev" title="Previous photo at this location">‹</button><span id="cardCount"></span><button id="cardNext" title="Next photo at this location">›</button></div></div></div>
 <div id="bar">
  <button id="prev" title="Previous photo">⏮</button>
  <button id="play" title="Play / Pause">▶</button>
@@ -85,7 +90,7 @@
 </div>
 <div id="intro">
  <h1>North Thailand Moto Riding</h1>
- <p>Explore fifteen dated motorcycle routes across North Thailand, from early Strava imports and Pai runs to Doi Pui, Huay Tung Tao, camping returns, and the Golden Triangle ride back to Chiang Mai. Photo stops appear as dots on the route.</p>
+ <p>Explore dated motorcycle routes and standalone photo stops across North Thailand, from early Strava imports and Pai runs to Doi Pui, Huay Tung Tao, camping returns, and the Golden Triangle ride back to Chiang Mai. Photo stops appear as dots on the map.</p>
  <div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap;justify-content:center">
   <button class="btn" id="startBtn">▶  Fly all trips</button>
   <button class="btn ghost" id="exploreBtn">Explore map freely</button>
@@ -142,6 +147,9 @@ TRIPS.forEach((T,ti)=>{
 });
 GP.sort((a,b)=>a.ti-b.ti||a.gdist-b.gdist);
 GP.forEach((x,i)=>{x.gi=i; x.p.gi=i;});
+function locKey(p){return `${(+p.lat).toFixed(6)},${(+p.lon).toFixed(6)}`;}
+const LOC_GROUPS={};
+GP.forEach(x=>{const key=locKey(x.p);(LOC_GROUPS[key]||(LOC_GROUPS[key]=[])).push(x.gi);});
 const TOTLEN=TRIPS.reduce((s,t)=>s+t.len,0);
 const RIDE_SECONDS=150, BASE=TOTLEN/RIDE_SECONDS;
 
@@ -220,17 +228,31 @@ let ti=0,g=0,playing=false,transitioning=false,pSpeed=1,bearing=0,lastTs=0,curGi
 let viewCenter=null,viewZoom=11.7,viewPitch=46;
 const SPEEDS=[1,1.5,2,0.5],LOOK=2600,CENTER=900,cardEl=document.getElementById('card');
 function nearPhotoFactor(){const T=TRIPS[ti];let best=1e9;for(const p of T.photos){best=Math.min(best,Math.abs(p.gdist-g));}return best<110?0.4:1;}
+function updateCardNav(gi){
+ const nav=document.getElementById('cardNav'),count=document.getElementById('cardCount');
+ const group=LOC_GROUPS[locKey(GP[gi].p)]||[gi],idx=group.indexOf(gi);
+ nav.classList.toggle('show',group.length>1);
+ count.textContent=group.length>1?`${idx+1} / ${group.length}`:'';
+}
 function showCardGi(gi){if(gi<0||gi===curGi)return;curGi=gi;const p=GP[gi].p;
  const img=document.getElementById('cardImg');img.src=p.file;img.onerror=()=>{img.style.display='none';};img.onload=()=>{img.style.display='block';};
  document.getElementById('cardTitle').innerHTML=p.title+(p.off?'<span class="offtag">off-route</span>':'');
  document.getElementById('cardRegion').textContent=p.region;
  document.getElementById('cardDate').textContent=p.dt;
+ updateCardNav(gi);
  cardEl.classList.add('show');
  const trip=TRIPS[GP[gi].ti];
  document.getElementById('topTrip').textContent=`${trip.name} · ${trip.dateLabel}`;document.getElementById('top').classList.add('show');
  if(map.getLayer('ptsA'))map.setFilter('ptsA',['==','gi',gi]);
  setActiveTrip(GP[gi].ti);
  document.getElementById('counter').textContent=(gi+1)+' / '+GP.length;}
+function moveLocationPhoto(step){
+ if(curGi<0)return;
+ const group=LOC_GROUPS[locKey(GP[curGi].p)]||[curGi];
+ if(group.length<2)return;
+ const idx=group.indexOf(curGi),nextGi=group[(idx+step+group.length)%group.length];
+ showCardGi(nextGi);
+}
 function photoGiAtPoint(e){
  const r=14,box=[[e.point.x-r,e.point.y-r],[e.point.x+r,e.point.y+r]];
  const features=map.queryRenderedFeatures(box,{layers:['ptsHit']});
@@ -300,6 +322,8 @@ function gotoTrip(idx,fly){
 document.getElementById('play').onclick=()=>playing?pause():play();
 document.getElementById('next').onclick=()=>{pause();gotoGlobal((curGi<0?0:curGi+1),true);};
 document.getElementById('prev').onclick=()=>{pause();gotoGlobal((curGi<=0?0:curGi-1),true);};
+document.getElementById('cardNext').onclick=e=>{e.stopPropagation();pause();moveLocationPhoto(1);};
+document.getElementById('cardPrev').onclick=e=>{e.stopPropagation();pause();moveLocationPhoto(-1);};
 document.getElementById('speed').onclick=()=>{pSpeed=SPEEDS[(SPEEDS.indexOf(pSpeed)+1)%SPEEDS.length];document.getElementById('speed').textContent=pSpeed+'×';};
 document.getElementById('prog').onclick=e=>{const r=e.currentTarget.getBoundingClientRect();let f=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
  let target=f*TOTLEN,acc=0;for(let k=0;k<TRIPS.length;k++){if(target<=acc+TRIPS[k].len){ti=k;g=target-acc;break;}acc+=TRIPS[k].len;}

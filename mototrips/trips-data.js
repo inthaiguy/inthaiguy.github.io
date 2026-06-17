@@ -189356,6 +189356,471 @@ window.MOTO_TRIPS = {
         ]
       ],
       "photos": []
+    },
+    {
+      "key": "untracked-photo-stops",
+      "name": "Untracked Photo Stops",
+      "color": "#9ec0ff",
+      "source": "to_add/photos_no_tracks",
+      "startDate": "2010-09-12",
+      "endDate": "2017-11-18",
+      "dateLabel": "No-track photos",
+      "distanceKm": 0,
+      "pointCount": 45,
+      "kind": "Photo stops",
+      "summary": "Standalone motorcycle photo stops without GPX tracks. GPS-tagged photos use EXIF coordinates; a small number are inferred from same-day neighboring GPS photos or user-confirmed locations.",
+      "photos": [
+        {
+          "file": "photos_web/no-track-037-dsc-0501.jpg",
+          "orig": "DSC_0501.JPG",
+          "lon": 102.830408,
+          "lat": 16.428812,
+          "dt": "2009-03-06 17:12",
+          "title": "Pullman Khon Kaen parking lot",
+          "region": "Khon Kaen, Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-040-p1090516.jpg",
+          "orig": "P1090516.JPG",
+          "lon": 102.830408,
+          "lat": 16.428812,
+          "dt": "2009-10-15 12:37",
+          "title": "Pullman Khon Kaen parking lot",
+          "region": "Khon Kaen, Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-039-p1020715.jpg",
+          "orig": "P1020715.JPG",
+          "lon": 102.830408,
+          "lat": 16.428812,
+          "dt": "2010-03-07 11:15",
+          "title": "Pullman Khon Kaen parking lot",
+          "region": "Khon Kaen, Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-001-img-0432.jpg",
+          "orig": "IMG_0432.JPG",
+          "lon": 100.811333,
+          "lat": 13.933333,
+          "dt": "2010-09-12 10:35",
+          "title": "Untracked photo stop · 01",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-002-img-0762.jpg",
+          "orig": "IMG_0762.JPG",
+          "lon": 100.844,
+          "lat": 13.7485,
+          "dt": "2010-10-03 07:49",
+          "title": "Untracked photo stop · 02",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-044-img-2314-pano.jpg",
+          "orig": "IMG_2314-PANO.jpg",
+          "lon": 100.932971,
+          "lat": 13.286997,
+          "dt": "2011-02-12 15:10",
+          "title": "Untracked photo stop · IMG_2314-PANO",
+          "region": "Chon Buri, Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-003-img-3264.jpg",
+          "orig": "IMG_3264.JPG",
+          "lon": 100.500333,
+          "lat": 13.6405,
+          "dt": "2011-04-15 08:02",
+          "title": "Untracked photo stop · 03",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-004-img-3267.jpg",
+          "orig": "IMG_3267.JPG",
+          "lon": 100.6505,
+          "lat": 13.677833,
+          "dt": "2011-04-15 10:20",
+          "title": "Untracked photo stop · 04",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-005-img-4617.jpg",
+          "orig": "IMG_4617.JPG",
+          "lon": 99.106,
+          "lat": 14.643,
+          "dt": "2011-08-12 18:27",
+          "title": "Untracked photo stop · 05",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-006-img-4667.jpg",
+          "orig": "IMG_4667.JPG",
+          "lon": 99.185833,
+          "lat": 13.7825,
+          "dt": "2011-08-13 15:26",
+          "title": "Untracked photo stop · 06",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-007-img-4696.jpg",
+          "orig": "IMG_4696.JPG",
+          "lon": 99.1755,
+          "lat": 13.668167,
+          "dt": "2011-08-14 09:22",
+          "title": "Untracked photo stop · 07",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-008-img-5600.jpg",
+          "orig": "IMG_5600.JPG",
+          "lon": 100.615,
+          "lat": 13.993167,
+          "dt": "2011-10-29 08:47",
+          "title": "Untracked photo stop · 08",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-009-img-5610.jpg",
+          "orig": "IMG_5610.JPG",
+          "lon": 100.614667,
+          "lat": 13.9935,
+          "dt": "2011-10-29 08:51",
+          "title": "Untracked photo stop · 09",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-010-photo-719197.jpg",
+          "orig": "photo-719197.JPG",
+          "lon": 99.389667,
+          "lat": 18.217333,
+          "dt": "2011-11-26 16:38",
+          "title": "Untracked photo stop · 10",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-011-photo-717338.jpg",
+          "orig": "photo-717338.JPG",
+          "lon": 99.7355,
+          "lat": 20.137667,
+          "dt": "2011-12-01 16:23",
+          "title": "Untracked photo stop · 11",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-012-image-7afd8d84-d619-4b66-8575-1c10bcfb8a32.jpg",
+          "orig": "IMAGE_7AFD8D84-D619-4B66-8575-1C10BCFB8A32.JPG",
+          "lon": 98.686833,
+          "lat": 19.242667,
+          "dt": "2011-12-23 14:59",
+          "title": "Untracked photo stop · 12",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-013-image-4e304219-c589-4aca-9c0e-dccf3af0b2f6.jpg",
+          "orig": "IMAGE_4E304219-C589-4ACA-9C0E-DCCF3AF0B2F6.JPG",
+          "lon": 98.603333,
+          "lat": 19.278167,
+          "dt": "2011-12-23 16:01",
+          "title": "Untracked photo stop · 13",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-042-img-2168.jpg",
+          "orig": "IMG_2168.JPG",
+          "lon": 98.445333,
+          "lat": 8.18,
+          "dt": "2012-03-04 12:37",
+          "title": "Untracked photo stop · IMG_2168",
+          "region": "Phang Nga, Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-038-img-2189.jpg",
+          "orig": "IMG_2189.JPG",
+          "lon": 99.81274,
+          "lat": 11.786302,
+          "dt": "2012-03-04 13:05",
+          "title": "Untracked photo stop · IMG_2189",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-041-img-2233.jpg",
+          "orig": "IMG_2233.JPG",
+          "lon": 98.445333,
+          "lat": 8.18,
+          "dt": "2012-03-06 12:16",
+          "title": "Untracked photo stop · IMG_2233",
+          "region": "Phang Nga, Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-014-img-2615.jpg",
+          "orig": "IMG_2615.JPG",
+          "lon": 99.64461,
+          "lat": 20.1486,
+          "dt": "2012-12-20 15:54",
+          "title": "Untracked photo stop · 14",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-015-img-2627.jpg",
+          "orig": "IMG_2627.JPG",
+          "lon": 99.64461,
+          "lat": 20.1486,
+          "dt": "2012-12-20 16:51",
+          "title": "Untracked photo stop · 15",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-016-img-2630.jpg",
+          "orig": "IMG_2630.JPG",
+          "lon": 99.644607,
+          "lat": 20.148598,
+          "dt": "2012-12-20 16:54",
+          "title": "Untracked photo stop · 16",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-017-img-2675.jpg",
+          "orig": "IMG_2675.JPG",
+          "lon": 99.759983,
+          "lat": 20.117647,
+          "dt": "2012-12-22 12:38",
+          "title": "Untracked photo stop · 17",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-018-photo-dec-23-15-38-00.jpg",
+          "orig": "Photo Dec 23, 15 38 00.jpg",
+          "lon": 99.696,
+          "lat": 20.153333,
+          "dt": "2012-12-23 15:38",
+          "title": "Untracked photo stop · 18",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-019-photo-jan-02-16-51-04.jpg",
+          "orig": "Photo Jan 02, 16 51 04.jpg",
+          "lon": 98.5955,
+          "lat": 19.292667,
+          "dt": "2013-01-02 16:51",
+          "title": "Untracked photo stop · 19",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-020-img-3116.jpg",
+          "orig": "IMG_3116.JPG",
+          "lon": 100.4935,
+          "lat": 13.757833,
+          "dt": "2013-06-23 09:08",
+          "title": "Untracked photo stop · 20",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-021-jpeg.jpg",
+          "orig": "jpeg.jpeg",
+          "lon": 101.803167,
+          "lat": 14.386167,
+          "dt": "2013-06-30 11:10",
+          "title": "Untracked photo stop · 21",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-022-img-9142.jpg",
+          "orig": "IMG_9142.JPG",
+          "lon": 99.637894,
+          "lat": 14.828411,
+          "dt": "2014-08-09 10:32",
+          "title": "Untracked photo stop · 22",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-023-img-9157.jpg",
+          "orig": "IMG_9157.JPG",
+          "lon": 99.363892,
+          "lat": 16.095939,
+          "dt": "2014-08-10 07:08",
+          "title": "Untracked photo stop · 23",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-024-img-0153.jpg",
+          "orig": "IMG_0153.JPG",
+          "lon": 98.604919,
+          "lat": 19.312417,
+          "dt": "2014-11-01 10:56",
+          "title": "Untracked photo stop · 24",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-025-img-0160.jpg",
+          "orig": "IMG_0160.JPG",
+          "lon": 98.438569,
+          "lat": 19.359925,
+          "dt": "2014-11-01 14:16",
+          "title": "Untracked photo stop · 25",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-026-img-1225.jpg",
+          "orig": "IMG_1225.JPG",
+          "lon": 98.723428,
+          "lat": 18.863753,
+          "dt": "2014-12-15 15:05",
+          "title": "Untracked photo stop · 26",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-027-img-1323.jpg",
+          "orig": "IMG_1323.JPG",
+          "lon": 97.937683,
+          "lat": 19.502469,
+          "dt": "2014-12-18 14:09",
+          "title": "Untracked photo stop · 27",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-028-img-1785.jpg",
+          "orig": "IMG_1785.JPG",
+          "lon": 98.901031,
+          "lat": 18.853117,
+          "dt": "2015-01-06 09:26",
+          "title": "Untracked photo stop · 28",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-029-img-7639.jpg",
+          "orig": "IMG_7639.JPG",
+          "lon": 98.915161,
+          "lat": 18.929103,
+          "dt": "2015-10-18 16:08",
+          "title": "Untracked photo stop · 29",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-030-img-8176.jpg",
+          "orig": "IMG_8176.JPG",
+          "lon": 98.912628,
+          "lat": 18.865344,
+          "dt": "2015-11-23 11:01",
+          "title": "Untracked photo stop · 30",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-031-img-8179.jpg",
+          "orig": "IMG_8179.JPG",
+          "lon": 98.918206,
+          "lat": 18.856156,
+          "dt": "2015-11-23 11:21",
+          "title": "Untracked photo stop · 31",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-032-img-8975.jpg",
+          "orig": "IMG_8975.JPEG",
+          "lon": 98.934775,
+          "lat": 18.933811,
+          "dt": "2015-12-31 17:23",
+          "title": "Untracked photo stop · 32",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-033-img-9142-1.jpg",
+          "orig": "IMG_9142(1).JPG",
+          "lon": 98.903106,
+          "lat": 18.882097,
+          "dt": "2016-01-08 09:33",
+          "title": "Untracked photo stop · 33",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-034-img-9679.jpg",
+          "orig": "IMG_9679.JPG",
+          "lon": 98.873139,
+          "lat": 18.849186,
+          "dt": "2016-02-06 09:35",
+          "title": "Untracked photo stop · 34",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-035-img-8803.jpg",
+          "orig": "IMG_8803.JPG",
+          "lon": 98.761689,
+          "lat": 18.928597,
+          "dt": "2016-02-06 11:30",
+          "title": "Untracked photo stop · 35",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-036-img-7129.jpg",
+          "orig": "IMG_7129.HEIC",
+          "lon": 99.088692,
+          "lat": 18.848928,
+          "dt": "2017-11-18 11:25",
+          "title": "Untracked photo stop · 36",
+          "region": "Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-043-image-562eaceb.jpg",
+          "orig": "IMAGE_562EACEB-477B-4A24-9E79-40C8FEC791F4.JPG",
+          "lon": 98.445333,
+          "lat": 8.18,
+          "dt": "",
+          "title": "Untracked photo stop · IMAGE_562EACEB",
+          "region": "Phang Nga, Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-045-photo-dec-20-15-55-52.jpg",
+          "orig": "Photo Dec 20, 15 55 52.jpg",
+          "lon": 99.646056,
+          "lat": 20.148306,
+          "dt": "",
+          "title": "Untracked photo stop · Photo Dec 20, 15 55 52",
+          "region": "Northern Thailand",
+          "off": false
+        }
+      ]
     }
   ]
 };
