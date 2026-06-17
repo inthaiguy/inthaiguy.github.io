@@ -85,7 +85,7 @@
 </div>
 <div id="intro">
  <h1>North Thailand Moto Riding</h1>
- <p>Explore nine dated motorcycle routes across North Thailand, from Chiang Mai backroads and Pai runs to Doi Pui, Huay Tung Tao, camping returns, and the Golden Triangle ride back to Chiang Mai. Photo stops appear as dots on the route.</p>
+ <p>Explore fifteen dated motorcycle routes across North Thailand, from early Strava imports and Pai runs to Doi Pui, Huay Tung Tao, camping returns, and the Golden Triangle ride back to Chiang Mai. Photo stops appear as dots on the route.</p>
  <div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap;justify-content:center">
   <button class="btn" id="startBtn">▶  Fly all trips</button>
   <button class="btn ghost" id="exploreBtn">Explore map freely</button>
@@ -133,6 +133,8 @@ TRIPS.forEach((T,ti)=>{
  const sourcePts=T.photos.length>1?T.photos.map(p=>[p.lon,p.lat]):T.track;
  const knots=dedup(sourcePts,35);
  T.cam=catmull(knots,Math.max(3,T.photos.length?26:6)); T.cum=cumd(T.cam); T.len=T.cum[T.cum.length-1]||1;
+ const cinematicKnots=dedup(T.track||T.cam,1600);
+ T.cine=catmull(cinematicKnots.length>2?cinematicKnots:T.cam,36); T.cineCum=cumd(T.cine); T.cineLen=T.cineCum[T.cineCum.length-1]||1;
  T.photos.forEach((p,pi)=>{
    let best=1e18,bd=0;for(let i=0;i<T.cam.length;i++){const d=(p.lon-T.cam[i][0])**2+(p.lat-T.cam[i][1])**2;if(d<best){best=d;bd=T.cum[i];}}
    p.gdist=bd; GP.push({ti,pi,gdist:bd,p});
@@ -200,9 +202,10 @@ map.on('load',()=>{
    'circle-color':['case',['==',['get','off'],1],'#ffc04d','#9ec0ff'],
    'circle-stroke-color':['case',['==',['get','off'],1],'#7a4a00','#1d3a6b'],'circle-stroke-width':1.2,'circle-opacity':0.92}});
  map.addLayer({id:'ptsA',type:'circle',source:'pts',filter:['==','gi',-1],paint:{'circle-radius':9,'circle-color':'#fff','circle-stroke-color':'#e8633a','circle-stroke-width':3}});
- map.on('mouseenter','pts',()=>map.getCanvas().style.cursor='pointer');
- map.on('mouseleave','pts',()=>map.getCanvas().style.cursor='');
- map.on('click','pts',e=>{pause();gotoGlobal(e.features[0].properties.gi,true);});
+ map.addLayer({id:'ptsHit',type:'circle',source:'pts',paint:{'circle-radius':13,'circle-color':'#fff','circle-opacity':0.01,'circle-stroke-opacity':0}});
+ map.on('mouseenter','ptsHit',()=>map.getCanvas().style.cursor='pointer');
+ map.on('mouseleave','ptsHit',()=>map.getCanvas().style.cursor='');
+ map.on('click','ptsHit',e=>{const gi=photoGiAtPoint(e);if(gi<0)return;pause();gotoGlobal(gi,true);});
  TRIPS.forEach((T,i)=>{
   if(!map.getLayer('rt'+i))return;
   map.on('mouseenter','rt'+i,()=>map.getCanvas().style.cursor='pointer');
@@ -214,7 +217,8 @@ map.on('load',()=>{
 });
 
 let ti=0,g=0,playing=false,transitioning=false,pSpeed=1,bearing=0,lastTs=0,curGi=-1;
-const SPEEDS=[1,1.5,2,0.5],LOOK=420,CENTER=80,cardEl=document.getElementById('card');
+let viewCenter=null,viewZoom=11.7,viewPitch=46;
+const SPEEDS=[1,1.5,2,0.5],LOOK=2600,CENTER=900,cardEl=document.getElementById('card');
 function nearPhotoFactor(){const T=TRIPS[ti];let best=1e9;for(const p of T.photos){best=Math.min(best,Math.abs(p.gdist-g));}return best<110?0.4:1;}
 function showCardGi(gi){if(gi<0||gi===curGi)return;curGi=gi;const p=GP[gi].p;
  const img=document.getElementById('cardImg');img.src=p.file;img.onerror=()=>{img.style.display='none';};img.onload=()=>{img.style.display='block';};
@@ -227,27 +231,37 @@ function showCardGi(gi){if(gi<0||gi===curGi)return;curGi=gi;const p=GP[gi].p;
  if(map.getLayer('ptsA'))map.setFilter('ptsA',['==','gi',gi]);
  setActiveTrip(GP[gi].ti);
  document.getElementById('counter').textContent=(gi+1)+' / '+GP.length;}
+function photoGiAtPoint(e){
+ const r=14,box=[[e.point.x-r,e.point.y-r],[e.point.x+r,e.point.y+r]];
+ const features=map.queryRenderedFeatures(box,{layers:['ptsHit']});
+ let bestGi=-1,best=1e9;
+ features.forEach(f=>{
+  const gi=Number(f.properties.gi),p=GP[gi]?.p;if(!p)return;
+  const pt=map.project([p.lon,p.lat]),d=(pt.x-e.point.x)**2+(pt.y-e.point.y)**2;
+  if(d<best){best=d;bestGi=gi;}
+ });
+ return bestGi;
+}
 function curPhotoGi(){const T=TRIPS[ti];let gi=-1;for(const p of T.photos){if(p.gdist<=g+20)gi=p.gi;else break;}return gi;}
 function progG(){let done=0;for(let k=0;k<ti;k++)done+=TRIPS[k].len;return (done+g)/TOTLEN;}
-let groundSmooth=null;
-function destPoint(p,bd,dist){const R=6371000,r=Math.PI/180;const br=bd*r,la1=p[1]*r,lo1=p[0]*r,dr=dist/R;
- const la2=Math.asin(Math.sin(la1)*Math.cos(dr)+Math.cos(la1)*Math.sin(dr)*Math.cos(br));
- const lo2=lo1+Math.atan2(Math.sin(br)*Math.sin(dr)*Math.cos(la1),Math.cos(dr)-Math.sin(la1)*Math.sin(la2));
- return [lo2/r,la2/r];}
-const CAM_BACK=320, CAM_UP=470, CAM_PITCH=63;
-function groundAt(pt){let e=map.queryTerrainElevation?map.queryTerrainElevation(pt):null;
- if(e==null||isNaN(e))e=(groundSmooth==null?500:groundSmooth);
- groundSmooth=(groundSmooth==null)?e:groundSmooth+(e-groundSmooth)*0.05; return groundSmooth;}
-function render(){const T=TRIPS[ti];const pos=interp(T.cam,T.cum,g);
- const ahead=interp(T.cam,T.cum,Math.min(T.len,g+LOOK));
- bearing=smoothAng(bearing,brg(pos,ahead),0.045);
- const gnd=groundAt(pos);
- try{const camPt=destPoint(pos,(bearing+180)%360,CAM_BACK);
-  const cam=map.getFreeCameraOptions();
-  cam.position=maplibregl.MercatorCoordinate.fromLngLat(camPt,gnd+CAM_UP);
-  cam.setPitchBearing(CAM_PITCH,bearing);
-  map.setFreeCameraOptions(cam);
- }catch(e){map.jumpTo({center:pos,bearing,pitch:CAM_PITCH,zoom:14.0});}
+const CAM_PITCH=46;
+function easePoint(current,target,k){
+ if(!current)return target.slice();
+ return [current[0]+(target[0]-current[0])*k,current[1]+(target[1]-current[1])*k];
+}
+function render(){const T=TRIPS[ti];const routeProgress=Math.max(0,Math.min(1,g/T.len));
+ const cineG=routeProgress*T.cineLen;
+ const pos=interp(T.cine,T.cineCum,cineG);
+ const ahead=interp(T.cine,T.cineCum,Math.min(T.cineLen,cineG+LOOK));
+ const center=interp(T.cine,T.cineCum,Math.min(T.cineLen,cineG+CENTER));
+ bearing=smoothAng(bearing,brg(pos,ahead),0.012);
+ const nearPhoto=nearPhotoFactor()<1;
+ const targetZoom=nearPhoto?12.8:11.65;
+ const targetPitch=nearPhoto?50:CAM_PITCH;
+ viewCenter=easePoint(viewCenter,center,0.024);
+ viewZoom+=((targetZoom-viewZoom)*0.025);
+ viewPitch+=((targetPitch-viewPitch)*0.025);
+ map.jumpTo({center:viewCenter,bearing,pitch:viewPitch,zoom:viewZoom});
  const photoGi=curPhotoGi();
  if(photoGi>=0)showCardGi(photoGi);else{cardEl.classList.remove('show');updateTripHeader();}
  setActiveTrip(ti);document.getElementById('progfill').style.width=(progG()*100)+'%';}
@@ -257,11 +271,11 @@ function tick(tsNow){if(!playing)return;if(transitioning){requestAnimationFrame(
  const T=TRIPS[ti];
  if(g>=T.len){ if(ti<TRIPS.length-1){startTransition();return;} g=T.len;render();return endTour();}
  render();requestAnimationFrame(tick);}
-function startTransition(){transitioning=true;const next=TRIPS[ti+1];const start=next.cam[0];const a2=next.cam[Math.min(20,next.cam.length-1)];
+function startTransition(){transitioning=true;const next=TRIPS[ti+1];const start=next.cine[0];const a2=next.cine[Math.min(20,next.cine.length-1)];
  document.getElementById('topTrip').textContent=`${next.name} · ${next.dateLabel}`;
  setActiveTrip(ti+1);
- map.flyTo({center:start,zoom:13.4,pitch:60,bearing:brg(start,a2),duration:3500,curve:1.4});
- map.once('moveend',()=>{ti++;g=0;bearing=brg(next.cam[0],a2);transitioning=false;lastTs=performance.now();if(playing)requestAnimationFrame(tick);});}
+ map.flyTo({center:start,zoom:11.8,pitch:48,bearing:brg(start,a2),duration:4200,curve:1.7});
+ map.once('moveend',()=>{ti++;g=0;bearing=brg(next.cine[0],a2);viewCenter=start.slice();viewZoom=11.8;viewPitch=48;transitioning=false;lastTs=performance.now();if(playing)requestAnimationFrame(tick);});}
 function setBtn(){document.getElementById('play').textContent=playing?'❚❚':'▶';}
 function play(){if(playing)return;playing=true;setBtn();lastTs=performance.now();requestAnimationFrame(tick);}
 function pause(){playing=false;setBtn();}
@@ -270,12 +284,14 @@ function endTour(){playing=false;setBtn();let mnx=99,mny=99,mxx=-99,mxy=-99;
  map.flyTo({center:[(mnx+mxx)/2,(mny+mxy)/2],zoom:8.2,pitch:38,bearing:0,duration:5000});
  cardEl.classList.remove('show');document.getElementById('top').classList.remove('show');ti=0;g=0;curGi=-1;}
 function gotoGlobal(gi,fly){gi=Math.max(0,Math.min(GP.length-1,gi));const x=GP[gi];ti=x.ti;g=x.gdist;
- if(fly){const T=TRIPS[ti];const pos=interp(T.cam,T.cum,g);const ahead=interp(T.cam,T.cum,Math.min(T.len,g+LOOK));bearing=brg(pos,ahead);
-  map.flyTo({center:pos,zoom:14.0,pitch:64,bearing,duration:1800});}
+ if(fly){const T=TRIPS[ti];const routeProgress=Math.max(0,Math.min(1,g/T.len));const cineG=routeProgress*T.cineLen;
+  const pos=interp(T.cine,T.cineCum,cineG);const ahead=interp(T.cine,T.cineCum,Math.min(T.cineLen,cineG+LOOK));bearing=brg(pos,ahead);
+  const photoCenter=[x.p.lon,x.p.lat];viewCenter=photoCenter.slice();viewZoom=13.2;viewPitch=50;
+  map.flyTo({center:photoCenter,zoom:13.2,pitch:50,bearing,duration:2200,curve:1.5});}
  curGi=-1;showCardGi(gi);document.getElementById('progfill').style.width=(progG()*100)+'%';}
 function gotoTrip(idx,fly){
- ti=Math.max(0,Math.min(TRIPS.length-1,idx));g=0;curGi=-1;groundSmooth=null;cardEl.classList.remove('show');setActiveTrip(ti);updateTripHeader();
- const T=TRIPS[ti], start=T.cam[0], ahead=T.cam[Math.min(20,T.cam.length-1)]||start;bearing=brg(start,ahead);
+ ti=Math.max(0,Math.min(TRIPS.length-1,idx));g=0;curGi=-1;viewCenter=null;viewZoom=11.7;viewPitch=CAM_PITCH;cardEl.classList.remove('show');setActiveTrip(ti);updateTripHeader();
+ const T=TRIPS[ti], start=T.cine[0], ahead=T.cine[Math.min(20,T.cine.length-1)]||start;bearing=brg(start,ahead);
  if(map.getLayer('ptsA'))map.setFilter('ptsA',['==','gi',-1]);
  if(fly)map.fitBounds(boundsForTrack(T.track||T.cam),{padding:focusPadding(),duration:1200,maxZoom:12.8});
  document.getElementById('progfill').style.width=(progG()*100)+'%';
@@ -290,9 +306,9 @@ document.getElementById('prog').onclick=e=>{const r=e.currentTarget.getBoundingC
  pause();const T=TRIPS[ti];const pos=interp(T.cam,T.cum,g);const ah=interp(T.cam,T.cum,Math.min(T.len,g+LOOK));bearing=brg(pos,ah);curGi=-1;render();};
 window.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();playing?pause():play();}
  else if(e.code==='ArrowRight'){document.getElementById('next').click();}else if(e.code==='ArrowLeft'){document.getElementById('prev').click();}});
-function begin(auto){document.getElementById('intro').style.display='none';groundSmooth=null;
- const go=()=>{ti=0;g=0;bearing=brg(TRIPS[0].cam[0],TRIPS[0].cam[15]||TRIPS[0].cam[1]);
-  map.jumpTo({center:TRIPS[0].cam[0],zoom:13.4,pitch:62,bearing});setActiveTrip(0);render();if(auto)play();};
+function begin(auto){document.getElementById('intro').style.display='none';viewCenter=null;viewZoom=11.8;viewPitch=48;
+ const go=()=>{ti=0;g=0;bearing=brg(TRIPS[0].cine[0],TRIPS[0].cine[15]||TRIPS[0].cine[1]);
+  viewCenter=TRIPS[0].cine[0].slice();map.jumpTo({center:TRIPS[0].cine[0],zoom:11.8,pitch:48,bearing});setActiveTrip(0);render();if(auto)play();};
  if(ready)go();else map.once('idle',go);}
 document.getElementById('startBtn').onclick=()=>begin(true);
 document.getElementById('exploreBtn').onclick=()=>begin(false);
