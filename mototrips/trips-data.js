@@ -189366,7 +189366,7 @@ window.MOTO_TRIPS = {
       "endDate": "2017-11-18",
       "dateLabel": "No-track photos",
       "distanceKm": 0,
-      "pointCount": 46,
+      "pointCount": 48,
       "kind": "Photo stops",
       "summary": "Standalone motorcycle photo stops without GPX tracks. GPS-tagged photos use EXIF coordinates; a small number are inferred from same-day neighboring GPS photos or user-confirmed locations.",
       "photos": [
@@ -189397,6 +189397,26 @@ window.MOTO_TRIPS = {
           "lat": 16.428812,
           "dt": "2009-10-15 12:37",
           "title": "Pullman Khon Kaen parking lot",
+          "region": "Khon Kaen, Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-048-cimg0804.jpg",
+          "orig": "CIMG0804.JPG",
+          "lon": 102.838109,
+          "lat": 16.427542,
+          "dt": "2010-03-05 23:09",
+          "title": "Wat That / Bueng Kaen Nakhon photo stop",
+          "region": "Khon Kaen, Thailand",
+          "off": false
+        },
+        {
+          "file": "photos_web/no-track-047-p1020699.jpg",
+          "orig": "P1020699.JPG",
+          "lon": 102.838109,
+          "lat": 16.427542,
+          "dt": "2010-03-06 11:11",
+          "title": "Wat That / Bueng Kaen Nakhon photo stop",
           "region": "Khon Kaen, Thailand",
           "off": false
         },
