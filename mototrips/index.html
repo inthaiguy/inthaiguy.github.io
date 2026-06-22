@@ -14,7 +14,7 @@
  #intro p{opacity:.82;max-width:640px;font-size:15px;line-height:1.55}
  .btn{cursor:pointer;border:none;border-radius:999px;padding:13px 30px;font-size:16px;font-weight:600;background:var(--accent);color:#fff;box-shadow:0 6px 24px rgba(232,99,58,.45);transition:transform .15s}
  .btn:hover{transform:translateY(-2px)} .ghost{background:rgba(255,255,255,.13);box-shadow:none;font-weight:500}
- #overview{position:absolute;top:14px;left:14px;z-index:32;width:360px;max-width:calc(100vw - 28px);max-height:calc(100vh - 116px);
+ #overview{position:absolute;top:14px;left:14px;z-index:45;width:360px;max-width:calc(100vw - 28px);max-height:calc(100vh - 116px);
    background:rgba(12,14,16,.84);border:1px solid rgba(255,255,255,.14);border-radius:8px;box-shadow:0 18px 55px rgba(0,0,0,.48);
    backdrop-filter:blur(10px);overflow:hidden}
  #overview header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 12px 10px 15px;border-bottom:1px solid rgba(255,255,255,.12)}
@@ -47,6 +47,9 @@
  #cardNav button{cursor:pointer;border:none;border-radius:50%;width:28px;height:28px;display:grid;place-items:center;background:rgba(255,255,255,.13);color:#fff;font-size:16px}
  #cardNav button:hover{background:rgba(255,255,255,.22)}
  #cardCount{font-size:11px;opacity:.68;font-variant-numeric:tabular-nums}
+ #photoScrub{display:none;align-items:center;gap:8px;margin-top:8px}
+ #photoScrub.show{display:flex}
+ #photoRange{width:100%;accent-color:var(--accent)}
  .offtag{display:inline-block;font-size:10px;font-weight:700;color:#ffd27f;background:rgba(255,180,60,.18);padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:middle}
  #bar{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:35;display:flex;align-items:center;gap:9px;background:rgba(14,14,18,.82);border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:7px 13px;backdrop-filter:blur(8px)}
  #bar button{cursor:pointer;background:none;border:none;color:#fff;font-size:17px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center}
@@ -55,6 +58,9 @@
  #progfill{height:100%;width:0;background:var(--accent)}
  #counter{font-size:12px;opacity:.85;min-width:64px;text-align:center;font-variant-numeric:tabular-nums}
  #speed{font-size:12px;cursor:pointer;padding:3px 8px;border-radius:8px;background:rgba(255,255,255,.12)}
+ #tripVideo{display:none;color:#fff;text-decoration:none;font-size:12px;padding:3px 9px;border-radius:8px;background:rgba(255,255,255,.12)}
+ #tripVideo.show{display:inline-flex;align-items:center;gap:4px}
+ #tripVideo:hover{background:rgba(255,255,255,.2)}
  #top{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:30;text-align:center;pointer-events:none;opacity:0;transition:opacity .5s;text-shadow:0 2px 14px rgba(0,0,0,.85)}
  #top.show{opacity:1} #top .trip{font-size:15px;font-weight:700}
  #hint{position:absolute;top:13px;right:14px;z-index:30;font-size:11px;opacity:.5;text-align:right}
@@ -80,13 +86,13 @@
 </aside>
 <div id="top"><div class="trip" id="topTrip"></div></div>
 <div id="hint">drag to look · scroll to zoom<br>select a trip or click a photo dot</div>
-<div id="card"><img id="cardImg"/><div class="meta"><div class="t" id="cardTitle"></div><div class="r" id="cardRegion"></div><div class="d" id="cardDate"></div><div id="cardNav"><button id="cardPrev" title="Previous photo in this set">‹</button><span id="cardCount"></span><button id="cardNext" title="Next photo in this set">›</button></div></div></div>
+<div id="card"><img id="cardImg"/><div class="meta"><div class="t" id="cardTitle"></div><div class="r" id="cardRegion"></div><div class="d" id="cardDate"></div><div id="cardNav"><button id="cardPrev" title="Previous photo in this trip">‹</button><span id="cardCount"></span><button id="cardNext" title="Next photo in this trip">›</button></div><div id="photoScrub"><input id="photoRange" type="range" min="1" max="1" value="1" step="1" title="Photo position in this trip"/></div></div></div>
 <div id="bar">
  <button id="prev" title="Previous photo">⏮</button>
  <button id="play" title="Play / Pause">▶</button>
  <button id="next" title="Next photo">⏭</button>
  <div id="prog" title="Seek"><div id="progfill"></div></div>
- <div id="counter">—</div><div id="speed" title="Speed">1×</div>
+ <div id="counter">—</div><a id="tripVideo" href="#" target="_blank" rel="noopener" title="Trip video">Video</a><div id="speed" title="Speed">1×</div>
 </div>
 <div id="intro">
  <h1>North Thailand Moto Riding</h1>
@@ -150,6 +156,7 @@ GP.forEach((x,i)=>{x.gi=i; x.p.gi=i;});
 function locKey(p){return `${(+p.lat).toFixed(6)},${(+p.lon).toFixed(6)}`;}
 const LOC_GROUPS={};
 GP.forEach(x=>{const key=locKey(x.p);(LOC_GROUPS[key]||(LOC_GROUPS[key]=[])).push(x.gi);});
+const STOP_FEATURES=Object.entries(LOC_GROUPS).map(([key,gis])=>{const p=GP[gis[0]].p;return{type:'Feature',geometry:{type:'Point',coordinates:[p.lon,p.lat]},properties:{key,gi:gis[0],count:gis.length,off:gis.some(gi=>GP[gi].p.off)?1:0}};});
 const TOTLEN=TRIPS.reduce((s,t)=>s+t.len,0);
 const RIDE_SECONDS=150, BASE=TOTLEN/RIDE_SECONDS;
 
@@ -160,7 +167,7 @@ function renderTripList(){
   <span><span class="tripName">${T.name}</span><span class="tripMeta">${T.dateLabel} · ${T.kind}${T.photos.length?` · ${T.photos.length} photos`:''}</span></span>
   <span class="tripDist">${T.distanceKm} km</span>
  </button>`).join('');
- list.querySelectorAll('.tripBtn').forEach(btn=>btn.onclick=()=>{pause();gotoTrip(+btn.dataset.ti,true);});
+ list.querySelectorAll('.tripBtn').forEach(btn=>btn.onclick=()=>selectTrip(+btn.dataset.ti));
 }
 function setActiveTrip(idx){
  document.querySelectorAll('.tripBtn').forEach((btn,i)=>btn.classList.toggle('active',i===idx));
@@ -170,6 +177,12 @@ function setActiveTrip(idx){
   map.setPaintProperty('rt'+i,'line-width',i===idx?4.2:2.2);
   map.setPaintProperty('rtc'+i,'line-opacity',i===idx?0.42:0.18);
  });
+ updateTripVideo(idx);
+}
+function updateTripVideo(idx){
+ const link=document.getElementById('tripVideo'),url=TRIPS[idx]?.videoUrl;
+ link.classList.toggle('show',!!url);
+ if(url)link.href=url;else link.removeAttribute('href');
 }
 function boundsForTrack(track){
  const b=new maplibregl.LngLatBounds(track[0],track[0]);
@@ -185,6 +198,11 @@ function updateTripHeader(){
  document.getElementById('top').classList.add('show');
  if(!T.photos.length)document.getElementById('counter').textContent=`${T.distanceKm} km`;
 }
+function selectTrip(idx){
+ pause();document.getElementById('intro').style.display='none';
+ const go=()=>gotoTrip(idx,true);
+ if(ready)go();else map.once('idle',go);
+}
 renderTripList();
 
 const map=new maplibregl.Map({container:'map',style:{version:8,
@@ -194,6 +212,7 @@ const map=new maplibregl.Map({container:'map',style:{version:8,
   dem:{type:'raster-dem',tiles:['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],encoding:'terrarium',tileSize:256,maxzoom:14,attribution:'Elevation: Mapzen/AWS'}},
  layers:[{id:'satl',type:'raster',source:'sat'},{id:'lbl',type:'raster',source:'labels',paint:{'raster-opacity':0.8}}],sky:{}},
  center:TRIPS[0].cam[0],zoom:9.5,pitch:0,bearing:0,maxPitch:80,attributionControl:{compact:true}});
+window.MOTO_MAP=map;
 map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),'top-right');
 let ready=false;
 map.on('load',()=>{
@@ -204,21 +223,20 @@ map.on('load',()=>{
    map.addLayer({id:'rtc'+ti,type:'line',source:'rt'+ti,layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#000','line-width':5,'line-opacity':0.3}});
    map.addLayer({id:'rt'+ti,type:'line',source:'rt'+ti,layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':T.color,'line-width':2.6,'line-opacity':0.85}});}
  });
- const feats=GP.map(x=>({type:'Feature',geometry:{type:'Point',coordinates:[x.p.lon,x.p.lat]},properties:{gi:x.gi,off:x.p.off?1:0}}));
- map.addSource('pts',{type:'geojson',data:{type:'FeatureCollection',features:feats}});
+ map.addSource('pts',{type:'geojson',data:{type:'FeatureCollection',features:STOP_FEATURES}});
  map.addLayer({id:'pts',type:'circle',source:'pts',paint:{'circle-radius':4.2,
    'circle-color':['case',['==',['get','off'],1],'#ffc04d','#9ec0ff'],
    'circle-stroke-color':['case',['==',['get','off'],1],'#7a4a00','#1d3a6b'],'circle-stroke-width':1.2,'circle-opacity':0.92}});
- map.addLayer({id:'ptsA',type:'circle',source:'pts',filter:['==','gi',-1],paint:{'circle-radius':9,'circle-color':'#fff','circle-stroke-color':'#e8633a','circle-stroke-width':3}});
- map.addLayer({id:'ptsHit',type:'circle',source:'pts',paint:{'circle-radius':13,'circle-color':'#fff','circle-opacity':0.01,'circle-stroke-opacity':0}});
+ map.addLayer({id:'ptsA',type:'circle',source:'pts',filter:['==','key',''],paint:{'circle-radius':9,'circle-color':'#fff','circle-stroke-color':'#e8633a','circle-stroke-width':3}});
+ map.addLayer({id:'ptsHit',type:'circle',source:'pts',paint:{'circle-radius':20,'circle-color':'#fff','circle-opacity':0.01,'circle-stroke-opacity':0}});
  map.on('mouseenter','ptsHit',()=>map.getCanvas().style.cursor='pointer');
  map.on('mouseleave','ptsHit',()=>map.getCanvas().style.cursor='');
- map.on('click','ptsHit',e=>{const gi=photoGiAtPoint(e);if(gi<0)return;pause();gotoGlobal(gi,true);});
+ map.on('click',e=>{const gi=photoGiAtPoint(e);if(gi<0)return;pause();openPhotoDot(gi);});
  TRIPS.forEach((T,i)=>{
   if(!map.getLayer('rt'+i))return;
   map.on('mouseenter','rt'+i,()=>map.getCanvas().style.cursor='pointer');
   map.on('mouseleave','rt'+i,()=>map.getCanvas().style.cursor='');
-  map.on('click','rt'+i,()=>{pause();gotoTrip(i,true);});
+  map.on('click','rt'+i,e=>{if(photoGiAtPoint(e)>=0)return;pause();gotoTrip(i,true);});
  });
  setActiveTrip(0);
  ready=true;
@@ -229,10 +247,12 @@ let viewCenter=null,viewZoom=11.7,viewPitch=46;
 const SPEEDS=[1,1.5,2,0.5],LOOK=2600,CENTER=900,cardEl=document.getElementById('card');
 function nearPhotoFactor(){const T=TRIPS[ti];let best=1e9;for(const p of T.photos){best=Math.min(best,Math.abs(p.gdist-g));}return best<110?0.4:1;}
 function updateCardNav(gi){
- const nav=document.getElementById('cardNav'),count=document.getElementById('cardCount');
- const tripPhotos=TRIPS[GP[gi].ti].photos||[],idx=tripPhotos.findIndex(p=>p.gi===gi);
+ const nav=document.getElementById('cardNav'),count=document.getElementById('cardCount'),scrub=document.getElementById('photoScrub'),range=document.getElementById('photoRange'),tripPhotos=TRIPS[GP[gi].ti].photos||[],group=LOC_GROUPS[locKey(GP[gi].p)]||[gi];
+ const tripIdx=tripPhotos.findIndex(p=>p.gi===gi),groupIdx=group.indexOf(gi);
  nav.classList.toggle('show',tripPhotos.length>1);
- count.textContent=tripPhotos.length>1?`${idx+1} / ${tripPhotos.length}`:'';
+ count.textContent=tripPhotos.length>1?`${tripIdx+1} / ${tripPhotos.length}${group.length>1?` · stop ${groupIdx+1}/${group.length}`:''}`:'';
+ scrub.classList.toggle('show',tripPhotos.length>1);
+ range.max=Math.max(1,tripPhotos.length);range.value=tripIdx+1;
 }
 function showCardGi(gi){if(gi<0||gi===curGi)return;curGi=gi;const p=GP[gi].p;
  const img=document.getElementById('cardImg');img.src=p.file;img.onerror=()=>{img.style.display='none';};img.onload=()=>{img.style.display='block';};
@@ -243,19 +263,29 @@ function showCardGi(gi){if(gi<0||gi===curGi)return;curGi=gi;const p=GP[gi].p;
  cardEl.classList.add('show');
  const trip=TRIPS[GP[gi].ti];
  document.getElementById('topTrip').textContent=`${trip.name} · ${trip.dateLabel}`;document.getElementById('top').classList.add('show');
- if(map.getLayer('ptsA'))map.setFilter('ptsA',['==','gi',gi]);
+ if(map.getLayer('ptsA'))map.setFilter('ptsA',['==','key',locKey(p)]);
  setActiveTrip(GP[gi].ti);
  document.getElementById('counter').textContent=(gi+1)+' / '+GP.length;}
-function moveLocationPhoto(step){
+function moveTripPhoto(step){
  if(curGi<0)return;
  const tripPhotos=TRIPS[GP[curGi].ti].photos||[];
  if(tripPhotos.length<2)return;
- const idx=tripPhotos.findIndex(p=>p.gi===curGi);
- const next=tripPhotos[(idx+step+tripPhotos.length)%tripPhotos.length];
+ const idx=tripPhotos.findIndex(p=>p.gi===curGi),next=tripPhotos[(idx+step+tripPhotos.length)%tripPhotos.length];
  if(next)gotoGlobal(next.gi,true);
 }
+function scrubTripPhoto(value){
+ if(curGi<0)return;
+ const tripPhotos=TRIPS[GP[curGi].ti].photos||[],idx=Math.max(0,Math.min(tripPhotos.length-1,Number(value)-1));
+ const next=tripPhotos[idx];if(next)gotoGlobal(next.gi,true);
+}
+function moveGlobalPhoto(step){
+ if(curGi>=0)return gotoGlobal(curGi+step,true);
+ const T=TRIPS[ti],photo=step>0?T.photos[0]:T.photos[T.photos.length-1];
+ if(photo)return gotoGlobal(photo.gi,true);
+ gotoGlobal(step>0?0:GP.length-1,true);
+}
 function photoGiAtPoint(e){
- const r=14,box=[[e.point.x-r,e.point.y-r],[e.point.x+r,e.point.y+r]];
+ const r=24,box=[[e.point.x-r,e.point.y-r],[e.point.x+r,e.point.y+r]];
  const features=map.queryRenderedFeatures(box,{layers:['ptsHit']});
  let bestGi=-1,best=1e9;
  features.forEach(f=>{
@@ -264,6 +294,12 @@ function photoGiAtPoint(e){
   if(d<best){best=d;bestGi=gi;}
  });
  return bestGi;
+}
+function openPhotoDot(gi){
+ const group=LOC_GROUPS[locKey(GP[gi].p)]||[gi];
+ let nextGi=group[0];
+ if(curGi>=0&&group.includes(curGi))nextGi=group[(group.indexOf(curGi)+1)%group.length];
+ gotoGlobal(nextGi,true);
 }
 function curPhotoGi(){const T=TRIPS[ti];let gi=-1;for(const p of T.photos){if(p.gdist<=g+20)gi=p.gi;else break;}return gi;}
 function progG(){let done=0;for(let k=0;k<ti;k++)done+=TRIPS[k].len;return (done+g)/TOTLEN;}
@@ -315,16 +351,17 @@ function gotoGlobal(gi,fly){gi=Math.max(0,Math.min(GP.length-1,gi));const x=GP[g
 function gotoTrip(idx,fly){
  ti=Math.max(0,Math.min(TRIPS.length-1,idx));g=0;curGi=-1;viewCenter=null;viewZoom=11.7;viewPitch=CAM_PITCH;cardEl.classList.remove('show');setActiveTrip(ti);updateTripHeader();
  const T=TRIPS[ti], start=T.cine[0], ahead=T.cine[Math.min(20,T.cine.length-1)]||start;bearing=brg(start,ahead);
- if(map.getLayer('ptsA'))map.setFilter('ptsA',['==','gi',-1]);
+ if(map.getLayer('ptsA'))map.setFilter('ptsA',['==','key','']);
  if(fly)map.fitBounds(boundsForTrack(T.track||T.cam),{padding:focusPadding(),duration:1200,maxZoom:12.8});
  document.getElementById('progfill').style.width=(progG()*100)+'%';
 }
 
 document.getElementById('play').onclick=()=>playing?pause():play();
-document.getElementById('next').onclick=()=>{pause();gotoGlobal((curGi<0?0:curGi+1),true);};
-document.getElementById('prev').onclick=()=>{pause();gotoGlobal((curGi<=0?0:curGi-1),true);};
-document.getElementById('cardNext').onclick=e=>{e.stopPropagation();pause();moveLocationPhoto(1);};
-document.getElementById('cardPrev').onclick=e=>{e.stopPropagation();pause();moveLocationPhoto(-1);};
+document.getElementById('next').onclick=()=>{pause();moveGlobalPhoto(1);};
+document.getElementById('prev').onclick=()=>{pause();moveGlobalPhoto(-1);};
+document.getElementById('cardNext').onclick=e=>{e.stopPropagation();pause();moveTripPhoto(1);};
+document.getElementById('cardPrev').onclick=e=>{e.stopPropagation();pause();moveTripPhoto(-1);};
+document.getElementById('photoRange').oninput=e=>{pause();scrubTripPhoto(e.target.value);};
 document.getElementById('speed').onclick=()=>{pSpeed=SPEEDS[(SPEEDS.indexOf(pSpeed)+1)%SPEEDS.length];document.getElementById('speed').textContent=pSpeed+'×';};
 document.getElementById('prog').onclick=e=>{const r=e.currentTarget.getBoundingClientRect();let f=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
  let target=f*TOTLEN,acc=0;for(let k=0;k<TRIPS.length;k++){if(target<=acc+TRIPS[k].len){ti=k;g=target-acc;break;}acc+=TRIPS[k].len;}
