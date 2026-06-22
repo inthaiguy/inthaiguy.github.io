@@ -80,7 +80,7 @@
 </aside>
 <div id="top"><div class="trip" id="topTrip"></div></div>
 <div id="hint">drag to look · scroll to zoom<br>select a trip or click a photo dot</div>
-<div id="card"><img id="cardImg"/><div class="meta"><div class="t" id="cardTitle"></div><div class="r" id="cardRegion"></div><div class="d" id="cardDate"></div><div id="cardNav"><button id="cardPrev" title="Previous photo at this location">‹</button><span id="cardCount"></span><button id="cardNext" title="Next photo at this location">›</button></div></div></div>
+<div id="card"><img id="cardImg"/><div class="meta"><div class="t" id="cardTitle"></div><div class="r" id="cardRegion"></div><div class="d" id="cardDate"></div><div id="cardNav"><button id="cardPrev" title="Previous photo in this set">‹</button><span id="cardCount"></span><button id="cardNext" title="Next photo in this set">›</button></div></div></div>
 <div id="bar">
  <button id="prev" title="Previous photo">⏮</button>
  <button id="play" title="Play / Pause">▶</button>
@@ -135,7 +135,7 @@ function interp(c,cum,d){const last=cum.length-1;if(d<=0)return c[0];if(d>=cum[l
 let GP=[]; // global photo list {ti,pi,gdist,p}
 TRIPS.forEach((T,ti)=>{
  T.photos=T.photos||[];
- const sourcePts=T.photos.length>1?T.photos.map(p=>[p.lon,p.lat]):T.track;
+ const sourcePts=T.track?.length?T.track:T.photos.map(p=>[p.lon,p.lat]);
  const knots=dedup(sourcePts,35);
  T.cam=catmull(knots,Math.max(3,T.photos.length?26:6)); T.cum=cumd(T.cam); T.len=T.cum[T.cum.length-1]||1;
  const cinematicKnots=dedup(T.track||T.cam,1600);
@@ -230,9 +230,9 @@ const SPEEDS=[1,1.5,2,0.5],LOOK=2600,CENTER=900,cardEl=document.getElementById('
 function nearPhotoFactor(){const T=TRIPS[ti];let best=1e9;for(const p of T.photos){best=Math.min(best,Math.abs(p.gdist-g));}return best<110?0.4:1;}
 function updateCardNav(gi){
  const nav=document.getElementById('cardNav'),count=document.getElementById('cardCount');
- const group=LOC_GROUPS[locKey(GP[gi].p)]||[gi],idx=group.indexOf(gi);
- nav.classList.toggle('show',group.length>1);
- count.textContent=group.length>1?`${idx+1} / ${group.length}`:'';
+ const tripPhotos=TRIPS[GP[gi].ti].photos||[],idx=tripPhotos.findIndex(p=>p.gi===gi);
+ nav.classList.toggle('show',tripPhotos.length>1);
+ count.textContent=tripPhotos.length>1?`${idx+1} / ${tripPhotos.length}`:'';
 }
 function showCardGi(gi){if(gi<0||gi===curGi)return;curGi=gi;const p=GP[gi].p;
  const img=document.getElementById('cardImg');img.src=p.file;img.onerror=()=>{img.style.display='none';};img.onload=()=>{img.style.display='block';};
@@ -248,10 +248,11 @@ function showCardGi(gi){if(gi<0||gi===curGi)return;curGi=gi;const p=GP[gi].p;
  document.getElementById('counter').textContent=(gi+1)+' / '+GP.length;}
 function moveLocationPhoto(step){
  if(curGi<0)return;
- const group=LOC_GROUPS[locKey(GP[curGi].p)]||[curGi];
- if(group.length<2)return;
- const idx=group.indexOf(curGi),nextGi=group[(idx+step+group.length)%group.length];
- showCardGi(nextGi);
+ const tripPhotos=TRIPS[GP[curGi].ti].photos||[];
+ if(tripPhotos.length<2)return;
+ const idx=tripPhotos.findIndex(p=>p.gi===curGi);
+ const next=tripPhotos[(idx+step+tripPhotos.length)%tripPhotos.length];
+ if(next)gotoGlobal(next.gi,true);
 }
 function photoGiAtPoint(e){
  const r=14,box=[[e.point.x-r,e.point.y-r],[e.point.x+r,e.point.y+r]];
