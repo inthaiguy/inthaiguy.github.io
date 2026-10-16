@@ -13,37 +13,39 @@ body {
   min-height: 100vh;
   color: #1a1814;
   background:
-    radial-gradient(900px 420px at 50% -8%, rgba(255, 252, 247, 0.9), transparent 70%),
+    radial-gradient(720px 280px at 50% -10%, rgba(255, 252, 247, 0.85), transparent 70%),
     #e7e0d4;
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  line-height: 1.55;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .skip {
   position: absolute;
-  left: 12px;
+  left: 8px;
   top: -40px;
+  z-index: 3;
+  padding: 6px 8px;
   background: #1a1814;
   color: #fffdf8;
-  padding: 8px 12px;
-  z-index: 2;
 }
 
 .skip:focus {
-  top: 12px;
+  top: 8px;
 }
 
 .wrap {
-  width: min(1080px, calc(100% - 32px));
+  width: min(980px, calc(100% - 20px));
   margin: 0 auto;
-  padding: 20px 0 64px;
+  padding: 8px 0 28px;
 }
 
 .back {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
+  min-height: 32px;
   color: #1e3a5f;
+  font-size: 0.82rem;
   font-weight: 600;
   text-decoration: none;
 }
@@ -53,53 +55,46 @@ body {
 }
 
 .masthead {
-  padding: 8px 0 4px;
+  padding: 0 0 2px;
 }
 
 .kicker {
   margin: 0;
   color: #7c2d12;
-  font-size: 0.78rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 h1 {
-  margin: 8px 0 12px;
+  margin: 1px 0 4px;
   font-family: Georgia, "Iowan Old Style", Palatino, "Palatino Linotype", serif;
-  font-size: clamp(2.6rem, 10vw, 4.75rem);
+  font-size: clamp(1.35rem, 4.2vw, 1.7rem);
   font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 0.92;
-}
-
-.rule {
-  width: 72px;
-  height: 4px;
-  margin: 0 0 16px;
-  border-radius: 4px;
-  background: #a16207;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
 }
 
 .dek {
   max-width: 40rem;
   margin: 0;
   color: #3f3a34;
-  font-size: 1.05rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
 }
 
 .count {
-  min-height: 1.4em;
-  margin: 12px 0 0;
+  min-height: 1em;
+  margin: 3px 0 0;
   color: #5c564e;
-  font-size: 0.92rem;
+  font-size: 0.72rem;
   font-variant-numeric: tabular-nums;
 }
 
 .timeline {
   position: relative;
-  margin: 32px 0 0;
+  margin: 12px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -107,9 +102,9 @@ h1 {
 .timeline::before {
   content: "";
   position: absolute;
-  top: 6px;
-  bottom: 6px;
-  left: 11px;
+  top: 4px;
+  bottom: 4px;
+  left: 8px;
   width: 2px;
   border-radius: 2px;
   background: linear-gradient(#c4a574, #8a5a32);
@@ -122,25 +117,24 @@ h1 {
 .year-mark {
   position: relative;
   z-index: 1;
-  margin: 4px 0 14px;
+  margin: 2px 0 4px;
 }
 
 .year-mark h2 {
   display: inline-block;
-  margin: 0 0 0 36px;
-  padding: 0 2px;
+  margin: 0 0 0 24px;
   color: #3f3428;
   font-family: Georgia, Palatino, serif;
-  font-size: 1.45rem;
+  font-size: 0.92rem;
   font-weight: 500;
   line-height: 1;
 }
 
 .event {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  gap: 12px;
-  margin: 0 0 26px;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 8px;
+  margin: 0 0 8px;
 }
 
 .marker {
@@ -150,11 +144,11 @@ h1 {
 
 .dot {
   display: block;
-  width: 16px;
-  height: 16px;
-  margin-top: 26px;
+  width: 10px;
+  height: 10px;
+  margin-top: 12px;
   margin-left: 4px;
-  border: 3px solid #8a5a32;
+  border: 2px solid #8a5a32;
   border-radius: 50%;
   background: #fffdf8;
 }
@@ -163,54 +157,86 @@ h1 {
   min-width: 0;
   overflow: hidden;
   border: 1px solid rgba(80, 55, 25, 0.1);
-  border-radius: 18px;
+  border-radius: 10px;
   background: #fffdf8;
-  box-shadow: 0 14px 34px rgba(70, 48, 22, 0.08);
+  box-shadow: 0 4px 12px rgba(70, 48, 22, 0.06);
 }
 
 .card figure {
   margin: 0;
   background: #1b2433;
-  aspect-ratio: 8 / 5;
 }
 
-.card img {
+.figure-tip,
+.card figure img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: 56px;
   object-fit: cover;
+  object-position: center;
+}
+
+.figure-tip {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: help;
+}
+
+.figure-tip img {
+  height: 56px;
 }
 
 .card-body {
-  padding: 16px 16px 18px;
+  padding: 6px 8px 7px;
 }
 
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.date-tip,
 .card time {
   color: #7c2d12;
-  font-size: 0.78rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
   text-transform: uppercase;
 }
 
+.date-tip {
+  border: 0;
+  border-bottom: 1px dotted #a16207;
+  padding: 2px 0;
+  background: transparent;
+  cursor: help;
+  font-family: inherit;
+}
+
 .card h3 {
-  margin: 6px 0 10px;
+  margin: 1px 0 2px;
   font-family: Georgia, Palatino, serif;
-  font-size: clamp(1.35rem, 4.4vw, 1.7rem);
+  font-size: 0.88rem;
   font-weight: 500;
   line-height: 1.2;
 }
 
 .card p {
-  margin: 0 0 16px;
+  margin: 0 0 5px;
   color: #2c2823;
-  font-size: 1rem;
+  font-size: 0.72rem;
+  line-height: 1.32;
 }
 
 .sources {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -219,23 +245,76 @@ h1 {
 .sources a {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0 14px;
+  min-height: 32px;
+  padding: 0 8px;
   border: 1px solid #e4d8c6;
   border-radius: 999px;
   background: #f3ece1;
   color: #1e3a5f;
+  font-size: 0.72rem;
   font-weight: 600;
   text-decoration: none;
+}
+
+.sources a[data-tip] {
+  cursor: help;
 }
 
 .sources a:hover {
   background: #e7dccb;
 }
 
+.info-tip {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #5c564e;
+  cursor: help;
+}
+
+.info-tip svg {
+  width: 15px;
+  height: 15px;
+}
+
+.info-tip:hover,
+.date-tip:hover,
+.figure-tip:hover,
+.info-tip[aria-expanded="true"],
+.date-tip[aria-expanded="true"],
+.figure-tip[aria-expanded="true"] {
+  color: #1a1814;
+}
+
+.tip-pop {
+  position: fixed;
+  z-index: 30;
+  max-width: min(260px, calc(100vw - 16px));
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: #1a1814;
+  color: #fffdf8;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  box-shadow: 0 8px 18px rgba(26, 24, 20, 0.28);
+  pointer-events: none;
+}
+
+.tip-pop[hidden] {
+  display: none;
+}
+
 .status {
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   color: #3f3a34;
+  font-size: 0.82rem;
 }
 
 .status.error {
@@ -243,9 +322,9 @@ h1 {
 }
 
 .foot {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   color: #5c564e;
-  font-size: 0.92rem;
+  font-size: 0.72rem;
 }
 
 .foot a {
@@ -253,14 +332,15 @@ h1 {
 }
 
 a:focus-visible,
+button:focus-visible,
 .skip:focus-visible {
-  outline: 3px solid #1e3a5f;
-  outline-offset: 3px;
+  outline: 2px solid #1e3a5f;
+  outline-offset: 2px;
 }
 
 @media (min-width: 880px) {
   .wrap {
-    padding-top: 36px;
+    padding-top: 14px;
   }
 
   .timeline::before {
@@ -269,20 +349,20 @@ a:focus-visible,
   }
 
   .year-mark {
-    margin: 8px 0 18px;
+    margin: 4px 0 6px;
     text-align: center;
   }
 
   .year-mark h2 {
     margin: 0;
-    padding: 0 14px;
+    padding: 0 8px;
     background: #e7e0d4;
   }
 
   .event {
-    grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
-    gap: 28px;
-    margin-bottom: 36px;
+    grid-template-columns: minmax(0, 1fr) 18px minmax(0, 1fr);
+    gap: 14px;
+    margin-bottom: 10px;
   }
 
   .marker {
@@ -303,34 +383,20 @@ a:focus-visible,
   }
 
   .dot {
-    margin-top: 32px;
-    margin-left: 6px;
+    margin-top: 14px;
+    margin-left: 4px;
   }
 
-  .card-body {
-    padding: 20px 22px 22px;
-  }
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .card {
-    transition: transform 0.18s ease;
-  }
-
-  .card:hover {
-    transform: translateY(-2px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card {
-    transition: none;
+  .figure-tip,
+  .figure-tip img,
+  .card figure img {
+    height: 64px;
   }
 }
 
 @media (max-width: 360px) {
   .wrap {
-    width: calc(100% - 20px);
+    width: calc(100% - 12px);
   }
 }
 
@@ -341,7 +407,8 @@ a:focus-visible,
 
   .back,
   .foot,
-  .skip {
+  .skip,
+  .tip-pop {
     display: none;
   }
 
