@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self';">
+    <meta name="description" content="A running timeline of key AI events, written from the sources.">
+    <title>AI Timeline</title>
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Events load from events.json (sorted by date). To add one, see README.md. -->
+    <a class="skip" href="#timeline">Skip to timeline</a>
+    <div class="wrap">
+        <a class="back" href="../">← Fun</a>
+        <header class="masthead">
+            <p class="kicker">A running record</p>
+            <h1>AI Timeline</h1>
+            <div class="rule" aria-hidden="true"></div>
+            <p class="dek">Key moments when artificial intelligence met the public, in date order. Each note is a short account written from the linked source, with an original illustration.</p>
+            <p class="count" id="count" aria-live="polite"></p>
+        </header>
+        <ol class="timeline is-message" id="timeline">
+            <li class="status">Loading events…</li>
+        </ol>
+        <p class="foot">New events go in <code>events.json</code>. <a href="https://github.com/inthaiguy/inthaiguy.github.io/blob/gh-pages/fun/aitimeline/README.md">How to add one</a>.</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
