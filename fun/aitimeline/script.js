@@ -1,10 +1,14 @@
 /*
  * Renders fun/aitimeline/events.json as a vertical timeline, sorted by date.
  * To add an event, edit events.json and add an SVG under images/. See README.md.
+ * dateNote, imageNote, note, and sources[].note become hover/tap tooltips.
  */
 (function () {
   var list = document.getElementById("timeline");
   var countEl = document.getElementById("count");
+  var pop = document.getElementById("tip");
+  var current = null;
+  var pinned = false;
 
   function setMessage(text, isError) {
     list.classList.add("is-message");
@@ -52,7 +56,108 @@
     return path;
   }
 
+  function noteText(value) {
+    return typeof value === "string" && value.trim() ? value.trim() : "";
+  }
+
+  function hideTip() {
+    if (current) {
+      current.removeAttribute("aria-describedby");
+      if (current.hasAttribute("aria-expanded")) current.setAttribute("aria-expanded", "false");
+    }
+    current = null;
+    pinned = false;
+    pop.hidden = true;
+    pop.textContent = "";
+  }
+
+  function placeTip(el) {
+    var rect = el.getBoundingClientRect();
+    var width = pop.offsetWidth;
+    var height = pop.offsetHeight;
+    var left = rect.left + rect.width / 2 - width / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - width - 8));
+    var top = rect.top - height - 6;
+    if (top < 8) top = rect.bottom + 6;
+    if (top + height > window.innerHeight - 8) top = Math.max(8, window.innerHeight - height - 8);
+    pop.style.left = left + "px";
+    pop.style.top = top + "px";
+  }
+
+  function showTip(el, pin) {
+    var text = el.getAttribute("data-tip");
+    if (!text) return;
+    if (current && current !== el) {
+      current.removeAttribute("aria-describedby");
+      if (current.hasAttribute("aria-expanded")) current.setAttribute("aria-expanded", "false");
+    }
+    current = el;
+    pinned = !!pin;
+    pop.textContent = text;
+    pop.hidden = false;
+    el.setAttribute("aria-describedby", "tip");
+    if (el.hasAttribute("aria-expanded")) el.setAttribute("aria-expanded", pinned ? "true" : "false");
+    placeTip(el);
+  }
+
+  function bindTip(el) {
+    if (!el.getAttribute("data-tip")) return;
+    el.addEventListener("pointerenter", function () {
+      if (!pinned) showTip(el, false);
+    });
+    el.addEventListener("pointerleave", function () {
+      if (!pinned) hideTip();
+    });
+    el.addEventListener("focus", function () {
+      if (!pinned) showTip(el, false);
+    });
+    el.addEventListener("blur", function () {
+      if (!pinned) hideTip();
+    });
+    el.addEventListener("pointerdown", function (event) {
+      el.dataset.pointer = event.pointerType || "";
+    });
+    el.addEventListener("click", function (event) {
+      var touch = el.dataset.pointer === "touch";
+      var isLink = el.tagName === "A";
+      if (isLink && !touch) return;
+      if (isLink && touch && current === el && pinned) return;
+      if (isLink) event.preventDefault();
+      if (current === el && pinned) hideTip();
+      else showTip(el, true);
+    });
+    el.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") hideTip();
+    });
+  }
+
+  function infoIcon() {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 16 16");
+    svg.setAttribute("aria-hidden", "true");
+    var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", "8");
+    circle.setAttribute("cy", "8");
+    circle.setAttribute("r", "6.25");
+    circle.setAttribute("fill", "none");
+    circle.setAttribute("stroke", "currentColor");
+    circle.setAttribute("stroke-width", "1.4");
+    var stem = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    stem.setAttribute("d", "M8 7.2v4.2");
+    stem.setAttribute("stroke", "currentColor");
+    stem.setAttribute("stroke-width", "1.4");
+    stem.setAttribute("stroke-linecap", "round");
+    var dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    dot.setAttribute("cx", "8");
+    dot.setAttribute("cy", "5");
+    dot.setAttribute("r", "0.8");
+    dot.setAttribute("fill", "currentColor");
+    svg.append(circle, stem, dot);
+    return svg;
+  }
+
   function render(events) {
+    hideTip();
     var valid = events.filter(function (event) {
       return event && isIsoDate(event.date) && typeof event.title === "string" && event.title.trim() && typeof event.summary === "string" && event.summary.trim();
     });
@@ -101,23 +206,64 @@
       article.className = "card";
 
       var imagePath = safeImage(event.image);
+      var imageNote = noteText(event.imageNote);
       if (imagePath) {
         var figure = document.createElement("figure");
         var img = document.createElement("img");
         img.src = imagePath;
         img.alt = typeof event.imageAlt === "string" ? event.imageAlt : "";
         img.width = 800;
-        img.height = 500;
-        figure.appendChild(img);
+        img.height = 280;
+        if (imageNote) {
+          var figureButton = document.createElement("button");
+          figureButton.type = "button";
+          figureButton.className = "figure-tip";
+          figureButton.setAttribute("data-tip", imageNote);
+          figureButton.setAttribute("aria-expanded", "false");
+          figureButton.appendChild(img);
+          figure.appendChild(figureButton);
+          bindTip(figureButton);
+        } else {
+          figure.appendChild(img);
+        }
         article.appendChild(figure);
       }
 
       var body = document.createElement("div");
       body.className = "card-body";
 
+      var top = document.createElement("div");
+      top.className = "card-top";
+
+      var dateNote = noteText(event.dateNote);
       var time = document.createElement("time");
       time.dateTime = event.date;
       time.textContent = formatDate(event.date);
+      if (dateNote) {
+        var dateButton = document.createElement("button");
+        dateButton.type = "button";
+        dateButton.className = "date-tip";
+        dateButton.setAttribute("data-tip", dateNote);
+        dateButton.setAttribute("aria-expanded", "false");
+        dateButton.appendChild(time);
+        top.appendChild(dateButton);
+        bindTip(dateButton);
+      } else {
+        top.appendChild(time);
+      }
+
+      var cardNote = noteText(event.note);
+      if (cardNote) {
+        var info = document.createElement("button");
+        info.type = "button";
+        info.className = "info-tip";
+        info.setAttribute("data-tip", cardNote);
+        info.setAttribute("aria-label", "About this summary");
+        info.setAttribute("aria-expanded", "false");
+        info.appendChild(infoIcon());
+        top.appendChild(info);
+        bindTip(info);
+      }
 
       var title = document.createElement("h3");
       title.textContent = event.title;
@@ -136,16 +282,39 @@
         var link = document.createElement("a");
         link.href = href;
         link.textContent = typeof source.label === "string" && source.label.trim() ? source.label : "Source";
+        var sourceNote = noteText(source.note);
+        if (sourceNote) {
+          link.setAttribute("data-tip", sourceNote);
+          bindTip(link);
+        }
         sourceItem.appendChild(link);
         sources.appendChild(sourceItem);
       });
 
-      body.append(time, title, summary, sources);
+      body.append(top, title, summary, sources);
       article.appendChild(body);
       item.append(marker, article);
       list.appendChild(item);
     });
   }
+
+  document.addEventListener("pointerdown", function (event) {
+    if (!pinned || !current) return;
+    if (event.target === current || current.contains(event.target)) return;
+    hideTip();
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") hideTip();
+  });
+
+  window.addEventListener("scroll", function () {
+    if (current && !pop.hidden) placeTip(current);
+  }, true);
+
+  window.addEventListener("resize", function () {
+    if (current && !pop.hidden) placeTip(current);
+  });
 
   fetch("events.json")
     .then(function (response) {

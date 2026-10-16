@@ -1,31 +1,75 @@
 {
-  "readme": "To add an event, see README.md in this folder. The page sorts this list by date, so order here does not matter.",
+  "readme": "To add an event, see README.md in this folder. The page sorts this list by date, so order here does not matter. dateNote, imageNote, note, and sources[].note are the hover and tap tooltips.",
   "events": [
     {
       "id": "guardian-gpt3-oped",
       "date": "2020-09-08",
+      "dateNote": "Published Tuesday 8 September 2020, 04:45 EDT. The page was last modified on 2 February 2023.",
       "title": "The Guardian publishes an op-ed written by GPT-3",
-      "summary": "On 8 September 2020 The Guardian ran a column headlined “A robot wrote this entire article. Are you scared yet, human?” Editors asked GPT-3 to argue, in about 500 plain words, that people have nothing to fear from AI. Liam Porr, a UC Berkeley computer science student, fed the paper’s prompts to the model, which returned eight different essays. Opinion editor Amana Fontanella-Khan then cut and rearranged the strongest passages into the published piece, and noted the edit took less time than many human op-eds.",
+      "summary": "On 8 September 2020 The Guardian published “A robot wrote this entire article. Are you scared yet, human?” Editors asked GPT-3, in about 500 plain words, to argue that people have nothing to fear from AI. Liam Porr fed their prompt to the model, which returned eight essays. Opinion editor Amana Fontanella-Khan merged the strongest passages and said the edit took less time than many human op-eds.",
+      "note": "A short account of the column and the editor’s note, not the op-ed itself.",
       "image": "images/guardian-gpt3.svg",
       "imageAlt": "A newspaper page with a short column, a pull quote, and a small geometric robot finishing a line with a pen.",
+      "imageNote": "The published column was assembled from eight GPT-3 drafts. The Guardian did not run one essay unchanged.",
       "sources": [
         {
           "label": "The Guardian",
-          "url": "https://www.theguardian.com/commentisfree/2020/sep/08/robot-wrote-this-article-gpt-3"
+          "url": "https://www.theguardian.com/commentisfree/2020/sep/08/robot-wrote-this-article-gpt-3",
+          "note": "Opens the column and Amana Fontanella-Khan’s note on the prompts, the eight drafts, and the edit."
+        }
+      ]
+    },
+    {
+      "id": "wellsaid-planet-money",
+      "date": "2023-06-06",
+      "dateNote": "WellSaid’s blog post is dated 6 June 2023. The byline is Martin Ramirez.",
+      "title": "WellSaid clones Robert Smith’s voice for Planet Money",
+      "summary": "On 6 June 2023 WellSaid Labs said it had cloned former Planet Money host Robert Smith’s voice, with his consent, for what it called NPR’s first AI podcast. Kenny Malone and Jeff Guo drafted the script in ChatGPT — WellSaid says some telephone-operator “facts” were wrong — and Rhyan Johnson built the voice from earlier episodes, to be deleted after the series. Malone later co-hosted with the clone. WellSaid trained NPR’s producers and did not choose the takes.",
+      "note": "Drawn from WellSaid’s own account of the Planet Money series, including the consent terms and the deletion promise.",
+      "image": "images/wellsaid-voice.svg",
+      "imageAlt": "A microphone, a waveform, and two matching voice marks, one solid and one outlined.",
+      "imageNote": "Smith’s clone was trained on previous episodes and was supposed to be deleted after the series finale.",
+      "sources": [
+        {
+          "label": "WellSaid Labs",
+          "url": "https://www.wellsaid.io/resources/blog/npr-planet-money-host-robert-smith-clones-voice",
+          "note": "Martin Ramirez’s post on consent, the ChatGPT script, and Synthetic Robert."
+        }
+      ]
+    },
+    {
+      "id": "reid-hoffman-ai-twin",
+      "date": "2024-04-24",
+      "dateNote": "YouTube lists the publish date as 24 April 2024, on Reid Hoffman’s channel.",
+      "title": "Reid Hoffman meets his AI twin",
+      "summary": "On 24 April 2024 Reid Hoffman posted “Reid Hoffman meets his AI twin - Full,” a Q&A with a digital twin he calls REID AI. Hour One made the avatar, ElevenLabs the voice, and a GPT-4 chatbot trained on his books, speeches, and podcasts the answers. He interviewed it, then let it question him about AI, and wrote that he expected to hate the experiment but found it interesting. He says the video was fully endorsed by him.",
+      "note": "The date, title, and description come from the YouTube page. oEmbed confirms the title and that the channel is Reid Hoffman.",
+      "image": "images/reid-ai-twin.svg",
+      "imageAlt": "Two facing portraits, one drawn as a person and one as a scanned digital twin, with a play mark between them.",
+      "imageNote": "Avatar by Hour One, voice by ElevenLabs, answers from a GPT-4 chatbot trained on Hoffman’s own work.",
+      "sources": [
+        {
+          "label": "YouTube",
+          "url": "https://www.youtube.com/watch?v=rgD2gmwCS10",
+          "note": "Full video, “Reid Hoffman meets his AI twin - Full,” published 24 April 2024."
         }
       ]
     },
     {
       "id": "openai-math-progress",
       "date": "2026-10-06",
+      "dateNote": "Posted 6 October 2026. Updated 15 October 2026 with the Simons Foundation funding.",
       "title": "OpenAI shares mathematical results from a frontier model",
-      "summary": "On 6 October 2026 OpenAI said it was releasing a broad set of new mathematical results from an internal frontier model, in a GitHub repository with revision and citation protocols, Lean formalizations of many proofs, ten summaries of the model’s reasoning, and compute notes. The average result used about three hours of ChatGPT Pro thinking. The lab said the release followed advice from the Advisory Group on Mathematics and Artificial Intelligence at the Institute for Advanced Study. On 15 October it added a $5 million contribution, awarded by the Simons Foundation, for workshops and programs so mathematicians can examine and extend those results, plus model and compute access for supported researchers.",
+      "summary": "On 6 October 2026 OpenAI said an internal frontier model had produced new mathematical results, posted with Lean proofs, ten reasoning summaries, and compute notes — about three hours of ChatGPT Pro thinking for a typical result. The release followed advice from the Institute for Advanced Study’s math-and-AI advisory group. On 15 October OpenAI added $5 million, awarded by the Simons Foundation, for workshops, plus model and compute access for supported researchers.",
+      "note": "A short account of OpenAI’s post, including the 15 October update on the same page.",
       "image": "images/openai-math.svg",
       "imageAlt": "A triangle inscribed in a circle beside a proof card whose last line is marked checked.",
+      "imageNote": "Many of the proofs were also shared as Lean files a computer can check.",
       "sources": [
         {
           "label": "OpenAI",
-          "url": "https://openai.com/index/sharing-ai-progress-in-mathematics/"
+          "url": "https://openai.com/index/sharing-ai-progress-in-mathematics/",
+          "note": "OpenAI’s post on the results, how they were released, and the 15 October funding update."
         }
       ]
     }
