@@ -34,3 +34,9 @@ A static page at `/fun/aitimeline/`. `index.html` loads `events.json` and draws 
 5. `sources` can list more than one URL. Each `url` must be `http` or `https`.
 6. `dateNote`, `imageNote`, `note`, and each source `note` are optional tooltips. They show on hover, keyboard focus, and tap. On a touch screen, the first tap on a source link shows its note and the next tap opens it.
 7. Preview with a static server from the repo root (`python3 -m http.server`) and open `/fun/aitimeline/`.
+
+## Example sites
+
+These are layout references, not timeline events. Do not add them to `events.json`.
+
+- [AI Digest timeline](https://theaidigest.org/timeline) — linked from the bottom-left of the page. Hover or tap the link for a short note. On a touch screen, the first tap shows the note and the next tap opens the site in a new tab.
