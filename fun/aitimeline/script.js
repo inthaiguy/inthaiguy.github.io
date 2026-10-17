@@ -1,7 +1,8 @@
 /*
  * Renders fun/aitimeline/events.json as a vertical timeline, sorted by date.
- * To add an event, edit events.json and add an SVG under images/. See README.md.
- * dateNote, imageNote, note, and sources[].note become hover/tap tooltips.
+ * To add an event, edit events.json and add screenshots under images/. See README.md.
+ * dateNote, imageNote, note, and sources[].note are tooltips.
+ * Clicking a thumbnail opens imageFull.
  */
 (function () {
   var list = document.getElementById("timeline");
@@ -52,7 +53,7 @@
 
   function safeImage(path) {
     if (typeof path !== "string") return "";
-    if (!/^images\/[A-Za-z0-9][A-Za-z0-9._-]*\.svg$/.test(path)) return "";
+    if (!/^images\/[A-Za-z0-9][A-Za-z0-9._-]*\.(webp|jpe?g|png)$/i.test(path)) return "";
     return path;
   }
 
@@ -100,7 +101,8 @@
     placeTip(el);
   }
 
-  function bindTip(el) {
+  function bindTip(el, opts) {
+    opts = opts || {};
     if (!el.getAttribute("data-tip")) return;
     el.addEventListener("pointerenter", function () {
       if (!pinned) showTip(el, false);
@@ -114,6 +116,7 @@
     el.addEventListener("blur", function () {
       if (!pinned) hideTip();
     });
+    if (opts.click === false) return;
     el.addEventListener("pointerdown", function (event) {
       el.dataset.pointer = event.pointerType || "";
     });
@@ -206,26 +209,34 @@
       article.className = "card";
 
       var imagePath = safeImage(event.image);
+      var fullPath = safeImage(event.imageFull) || imagePath;
       var imageNote = noteText(event.imageNote);
       if (imagePath) {
         var figure = document.createElement("figure");
         var img = document.createElement("img");
         img.src = imagePath;
         img.alt = typeof event.imageAlt === "string" ? event.imageAlt : "";
-        img.width = 800;
-        img.height = 280;
+        img.width = 640;
+        img.height = 450;
+        var figureButton = document.createElement("button");
+        figureButton.type = "button";
+        figureButton.className = "figure-tip";
         if (imageNote) {
-          var figureButton = document.createElement("button");
-          figureButton.type = "button";
-          figureButton.className = "figure-tip";
           figureButton.setAttribute("data-tip", imageNote);
           figureButton.setAttribute("aria-expanded", "false");
-          figureButton.appendChild(img);
-          figure.appendChild(figureButton);
-          bindTip(figureButton);
-        } else {
-          figure.appendChild(img);
         }
+        figureButton.setAttribute("aria-haspopup", "dialog");
+        var zoom = document.createElement("span");
+        zoom.className = "zoom-label";
+        zoom.textContent = "Enlarge";
+        figureButton.append(img, zoom);
+        figureButton.addEventListener("click", function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          openViewer(fullPath, img.alt, imageNote);
+        });
+        if (imageNote) bindTip(figureButton, { click: false });
+        figure.appendChild(figureButton);
         article.appendChild(figure);
       }
 
@@ -297,6 +308,29 @@
       list.appendChild(item);
     });
   }
+
+  var viewer = document.getElementById("viewer");
+  var viewerImg = document.getElementById("viewer-img");
+  var viewerCap = document.getElementById("viewer-cap");
+
+  function openViewer(src, alt, caption) {
+    hideTip();
+    viewerImg.src = src;
+    viewerImg.alt = alt || "";
+    viewerCap.textContent = caption || "";
+    viewerCap.hidden = !caption;
+    if (typeof viewer.showModal === "function" && !viewer.open) viewer.showModal();
+  }
+
+  document.getElementById("viewer-close").addEventListener("click", function () {
+    viewer.close();
+  });
+  viewer.addEventListener("click", function (event) {
+    if (event.target === viewer) viewer.close();
+  });
+  viewer.addEventListener("close", function () {
+    viewerImg.removeAttribute("src");
+  });
 
   document.addEventListener("pointerdown", function (event) {
     if (!pinned || !current) return;
