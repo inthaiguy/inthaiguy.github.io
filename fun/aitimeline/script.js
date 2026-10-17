@@ -350,6 +350,9 @@
     if (current && !pop.hidden) placeTip(current);
   });
 
+  var exampleSite = document.getElementById("example-site");
+  if (exampleSite) bindTip(exampleSite);
+
   fetch("events.json")
     .then(function (response) {
       if (!response.ok) throw new Error("Could not load events");
