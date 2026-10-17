@@ -1,6 +1,25 @@
 {
-  "readme": "To add an event, see README.md in this folder. The page sorts this list by date, so order here does not matter. dateNote, imageNote, note, and sources[].note are the hover and tap tooltips.",
+  "readme": "To add an event, see README.md in this folder. The page sorts this list by date, so order here does not matter. dateNote, imageNote, note, and sources[].note are the hover and tap tooltips. image is the thumbnail; imageFull opens when the thumbnail is clicked.",
   "events": [
+    {
+      "id": "openai-hide-and-seek",
+      "date": "2019-09-17",
+      "dateNote": "YouTube lists the publish date as 17 September 2019, on OpenAI’s channel.",
+      "title": "OpenAI shows multi-agent hide and seek",
+      "summary": "On 17 September 2019 OpenAI posted “Multi-Agent Hide and Seek.” The description says agents trained in a simulated hide-and-seek game discovered progressively more complex tool use, building six strategies and counterstrategies, some of which OpenAI did not know the environment supported. OpenAI wrote that this kind of multi-agent co-adaptation may one day produce very complex behavior.",
+      "note": "Title and channel come from YouTube oEmbed. The date and description come from the watch page.",
+      "image": "images/hide-and-seek-thumb.webp",
+      "imageFull": "images/hide-and-seek.webp",
+      "imageAlt": "Screenshot of the YouTube watch page for OpenAI’s Multi-Agent Hide and Seek video.",
+      "imageNote": "The description says the agents found six strategies and counterstrategies while playing hide-and-seek.",
+      "sources": [
+        {
+          "label": "YouTube",
+          "url": "https://www.youtube.com/watch?v=kopoLzvh5jY",
+          "note": "OpenAI’s video “Multi-Agent Hide and Seek,” published 17 September 2019."
+        }
+      ]
+    },
     {
       "id": "guardian-gpt3-oped",
       "date": "2020-09-08",
@@ -8,8 +27,9 @@
       "title": "The Guardian publishes an op-ed written by GPT-3",
       "summary": "On 8 September 2020 The Guardian published “A robot wrote this entire article. Are you scared yet, human?” Editors asked GPT-3, in about 500 plain words, to argue that people have nothing to fear from AI. Liam Porr fed their prompt to the model, which returned eight essays. Opinion editor Amana Fontanella-Khan merged the strongest passages and said the edit took less time than many human op-eds.",
       "note": "A short account of the column and the editor’s note, not the op-ed itself.",
-      "image": "images/guardian-gpt3.svg",
-      "imageAlt": "A newspaper page with a short column, a pull quote, and a small geometric robot finishing a line with a pen.",
+      "image": "images/guardian-gpt3-thumb.webp",
+      "imageFull": "images/guardian-gpt3.webp",
+      "imageAlt": "Screenshot of The Guardian page for the GPT-3 op-ed.",
       "imageNote": "The published column was assembled from eight GPT-3 drafts. The Guardian did not run one essay unchanged.",
       "sources": [
         {
@@ -26,8 +46,9 @@
       "title": "WellSaid clones Robert Smith’s voice for Planet Money",
       "summary": "On 6 June 2023 WellSaid Labs said it had cloned former Planet Money host Robert Smith’s voice, with his consent, for what it called NPR’s first AI podcast. Kenny Malone and Jeff Guo drafted the script in ChatGPT — WellSaid says some telephone-operator “facts” were wrong — and Rhyan Johnson built the voice from earlier episodes, to be deleted after the series. Malone later co-hosted with the clone. WellSaid trained NPR’s producers and did not choose the takes.",
       "note": "Drawn from WellSaid’s own account of the Planet Money series, including the consent terms and the deletion promise.",
-      "image": "images/wellsaid-voice.svg",
-      "imageAlt": "A microphone, a waveform, and two matching voice marks, one solid and one outlined.",
+      "image": "images/wellsaid-voice-thumb.webp",
+      "imageFull": "images/wellsaid-voice.webp",
+      "imageAlt": "Screenshot of the WellSaid Labs post about cloning Robert Smith’s voice.",
       "imageNote": "Smith’s clone was trained on previous episodes and was supposed to be deleted after the series finale.",
       "sources": [
         {
@@ -44,8 +65,9 @@
       "title": "Reid Hoffman meets his AI twin",
       "summary": "On 24 April 2024 Reid Hoffman posted “Reid Hoffman meets his AI twin - Full,” a Q&A with a digital twin he calls REID AI. Hour One made the avatar, ElevenLabs the voice, and a GPT-4 chatbot trained on his books, speeches, and podcasts the answers. He interviewed it, then let it question him about AI, and wrote that he expected to hate the experiment but found it interesting. He says the video was fully endorsed by him.",
       "note": "The date, title, and description come from the YouTube page. oEmbed confirms the title and that the channel is Reid Hoffman.",
-      "image": "images/reid-ai-twin.svg",
-      "imageAlt": "Two facing portraits, one drawn as a person and one as a scanned digital twin, with a play mark between them.",
+      "image": "images/reid-ai-twin-thumb.webp",
+      "imageFull": "images/reid-ai-twin.webp",
+      "imageAlt": "Screenshot of the YouTube watch page for Reid Hoffman meets his AI twin.",
       "imageNote": "Avatar by Hour One, voice by ElevenLabs, answers from a GPT-4 chatbot trained on Hoffman’s own work.",
       "sources": [
         {
@@ -56,15 +78,35 @@
       ]
     },
     {
+      "id": "claude-37-sonnet",
+      "date": "2025-02-24",
+      "dateNote": "Anthropic’s announcement is dated 24 February 2025.",
+      "title": "Anthropic releases Claude 3.7 Sonnet and Claude Code",
+      "summary": "On 24 February 2025 Anthropic announced Claude 3.7 Sonnet, calling it its most intelligent model then and the first hybrid reasoning model: quick replies, or visible step-by-step thinking. API users can cap that thinking at up to 128K tokens. The price stayed $3 per million input tokens and $15 per million output tokens, including thinking tokens. Anthropic also introduced Claude Code, a limited research preview that can edit files, run tests, and use the terminal. Extended thinking is on every Claude plan except the free tier.",
+      "note": "The date, price, thinking budget, and where the model is available are taken from Anthropic’s announcement.",
+      "image": "images/claude-37-thumb.webp",
+      "imageFull": "images/claude-37.webp",
+      "imageAlt": "Screenshot of Anthropic’s Claude 3.7 Sonnet and Claude Code announcement.",
+      "imageNote": "Claude Code, introduced in the same post, can search and edit code, run tests, and use command-line tools.",
+      "sources": [
+        {
+          "label": "Anthropic",
+          "url": "https://www.anthropic.com/news/claude-3-7-sonnet",
+          "note": "Anthropic’s announcement of Claude 3.7 Sonnet and Claude Code."
+        }
+      ]
+    },
+    {
       "id": "openai-math-progress",
       "date": "2026-10-06",
       "dateNote": "Posted 6 October 2026. Updated 15 October 2026 with the Simons Foundation funding.",
       "title": "OpenAI shares mathematical results from a frontier model",
       "summary": "On 6 October 2026 OpenAI said an internal frontier model had produced new mathematical results, posted with Lean proofs, ten reasoning summaries, and compute notes — about three hours of ChatGPT Pro thinking for a typical result. The release followed advice from the Institute for Advanced Study’s math-and-AI advisory group. On 15 October OpenAI added $5 million, awarded by the Simons Foundation, for workshops, plus model and compute access for supported researchers.",
       "note": "A short account of OpenAI’s post, including the 15 October update on the same page.",
-      "image": "images/openai-math.svg",
-      "imageAlt": "A triangle inscribed in a circle beside a proof card whose last line is marked checked.",
-      "imageNote": "Many of the proofs were also shared as Lean files a computer can check.",
+      "image": "images/openai-math-thumb.webp",
+      "imageFull": "images/openai-math.webp",
+      "imageAlt": "Screenshot of OpenAI’s post Sharing AI progress in mathematics, from the Internet Archive.",
+      "imageNote": "Many of the proofs were also shared as Lean files a computer can check. The picture is an archived copy of the page.",
       "sources": [
         {
           "label": "OpenAI",

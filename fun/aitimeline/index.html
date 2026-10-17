@@ -30,6 +30,13 @@
         <p class="foot">New events go in <code>events.json</code>. <a href="https://github.com/inthaiguy/inthaiguy.github.io/blob/gh-pages/fun/aitimeline/README.md">How to add one</a>.</p>
     </div>
     <div id="tip" class="tip-pop" role="tooltip" hidden></div>
+    <dialog id="viewer" class="viewer" aria-label="Larger screenshot">
+        <div class="viewer-panel">
+            <button type="button" class="viewer-close" id="viewer-close">Close</button>
+            <img id="viewer-img" alt="">
+            <p id="viewer-cap"></p>
+        </div>
+    </dialog>
     <script src="script.js"></script>
 </body>
 </html>
