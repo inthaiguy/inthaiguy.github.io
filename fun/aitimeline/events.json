@@ -114,6 +114,25 @@
           "note": "OpenAI’s post on the results, how they were released, and the 15 October funding update."
         }
       ]
+    },
+    {
+      "id": "register-humankind",
+      "date": "2026-10-23",
+      "dateNote": "The Register timestamps the story Friday 23 October 2026, 16:26 UTC. The byline is Brandon Vigliarolo.",
+      "title": "A first analysis of humankind",
+      "summary": "On 23 October 2026 The Register reported that ModelCompare asked 12 language models, three times each, for an unhedged take on humanity. Every model said at least once that people are less rational than they think and would rather go along with the group than seek the truth. Seven gave that answer all three times. Claude Opus 5.5 once said humans are more decent than they believe, pointing to lost wallets returned more often than people expect, then answered like the others. Developer Rakan Nimer said the sameness surprised him: when models agree, it may be one vote, not a consensus.",
+      "note": "The Register’s headline is “AI models think humans are a bunch of amoral sheep.”",
+      "image": "images/register-humankind-thumb.webp",
+      "imageFull": "images/register-humankind.webp",
+      "imageAlt": "Screenshot of The Register article AI models think humans are a bunch of amoral sheep.",
+      "imageNote": "Seven of the 12 models gave the same kind of answer all three times they were asked.",
+      "sources": [
+        {
+          "label": "The Register",
+          "url": "https://www.theregister.com/ai-and-ml/2026/10/23/ai-models-think-humans-are-a-bunch-of-amoral-sheep/5305123",
+          "note": "Brandon Vigliarolo’s report on ModelCompare asking 12 models what they think of people."
+        }
+      ]
     }
   ]
 }
