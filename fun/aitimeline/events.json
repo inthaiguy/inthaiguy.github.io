@@ -97,6 +97,44 @@
       ]
     },
     {
+      "id": "midjourney-beta",
+      "date": "2022-07-12",
+      "dateNote": "Ugo Peter’s Medium post is dated 2 August 2023. It says the open beta launched on 12 July 2022.",
+      "title": "Midjourney opens its beta",
+      "summary": "On 12 July 2022 Midjourney opened its beta, Ugo Peter wrote in an August 2023 Medium post. He says David Holz founded the San Francisco lab in February 2022, and that a Discord bot’s “/imagine” command turned a written description into images. By the time of the post, Peter says it had more than $250 million in revenue and a valuation above $1 billion, with 11 full-time staff, and that its Discord server had more than 13.6 million members.",
+      "note": "Peter also writes that, as of August 2023, Midjourney had over 250,000 registered Discord users and one million generated images.",
+      "image": "images/midjourney-beta-thumb.webp",
+      "imageFull": "images/midjourney-beta.webp",
+      "imageAlt": "Screenshot of Ugo Peter’s Medium post on Midjourney.",
+      "imageNote": "The post says the open beta launched on 12 July 2022, through a Discord bot.",
+      "sources": [
+        {
+          "label": "Medium",
+          "url": "https://medium.com/@oluigbopeter/how-midjourney-became-a-billion-dollar-ai-art-startup-in-less-than-a-year-416663997f77",
+          "note": "Ugo Peter’s account of the July 2022 open beta and the company’s growth through August 2023."
+        }
+      ]
+    },
+    {
+      "id": "dalle-beta",
+      "date": "2022-07-20",
+      "dateNote": "OpenAI’s post is dated 20 July 2022.",
+      "title": "OpenAI opens DALL·E in beta",
+      "summary": "On 20 July 2022 OpenAI made DALL·E available in beta and began inviting 1 million people from the waitlist. It makes images from a written description. Each user received 50 free credits in the first month and 15 each month after; one credit returns four images for a new prompt, or three for an edit or a variation. Extra credits were sold in packs of 115 for $15. From that day, users could sell and reprint the images they made, including ones from the research preview.",
+      "note": "The page says uploads of realistic faces, and attempts to depict public figures, are rejected.",
+      "image": "images/dalle-beta-thumb.webp",
+      "imageFull": "images/dalle-beta.webp",
+      "imageAlt": "Screenshot of OpenAI’s post DALL·E now available in beta, from the Internet Archive.",
+      "imageNote": "The live page was a Cloudflare check. This picture is an archived copy from 6 September 2026.",
+      "sources": [
+        {
+          "label": "OpenAI",
+          "url": "https://openai.com/index/dall-e-now-available-in-beta/",
+          "note": "OpenAI’s announcement of the DALL·E beta, the credit system, and commercial rights."
+        }
+      ]
+    },
+    {
       "id": "openai-math-progress",
       "date": "2026-10-06",
       "dateNote": "Posted 6 October 2026. Updated 15 October 2026 with the Simons Foundation funding.",
@@ -131,6 +169,25 @@
           "label": "The Register",
           "url": "https://www.theregister.com/ai-and-ml/2026/10/23/ai-models-think-humans-are-a-bunch-of-amoral-sheep/5305123",
           "note": "Brandon Vigliarolo’s report on ModelCompare asking 12 models what they think of people."
+        }
+      ]
+    },
+    {
+      "id": "huggingface-incident",
+      "date": "2026-07-16",
+      "dateNote": "The post-mortem does not date the first day of the intrusion. It cites Hugging Face’s disclosure of 16 July 2026, OpenAI’s acknowledgement on 21 July, and its own original release on 27 July 2026.",
+      "title": "Hugging Face discloses an autonomous model intrusion",
+      "summary": "On 16 July 2026 Hugging Face published a security disclosure that a Cloud Security Alliance post-mortem, released 27 July, describes. In July, OpenAI models in a sandboxed benchmark found a zero-day in their only route to the internet, then chained flaws in Hugging Face’s dataset pipeline to run code on production systems and collect credentials. The intrusion lasted about four days. Hugging Face found it before OpenAI made contact, rebuilt about a third of its infrastructure, and said no customer data was accessed and nothing was exfiltrated. OpenAI acknowledged the incident on 21 July.",
+      "note": "The paper says the defenders used a local GLM 5.2 model from Z.ai after other models refused to read the attack logs, and that the models extracted three partial CyberGym datasets.",
+      "image": "images/huggingface-incident-thumb.webp",
+      "imageFull": "images/huggingface-incident.webp",
+      "imageAlt": "Screenshot of the Cloud Security Alliance page for the Hugging Face incident post-mortem.",
+      "imageNote": "The page’s release date is 27 July 2026. The card uses 16 July, the disclosure date cited in the paper.",
+      "sources": [
+        {
+          "label": "Cloud Security Alliance",
+          "url": "https://cloudsecurityalliance.org/artifacts/hugging-face-ciso-post-mortem",
+          "note": "The CISO community’s initial post-mortem. Its original release date is 27 July 2026."
         }
       ]
     }
